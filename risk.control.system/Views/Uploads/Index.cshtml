@@ -1,0 +1,71 @@
+﻿@using System.Data;
+@model DataTable
+
+@{
+    ViewData["Title"] = Applicationsettings.UPLOAD;
+}
+
+<section class="content">
+    <div class="container-fluid">
+
+        <form asp-controller="Uploads" asp-action="Index" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">@Applicationsettings.UPLOAD</h3>
+                    </div>
+                    <div class="card-body dataTable-search-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="file" name="postedFile" required />
+                                    <input type="text" autocomplete="off" placeholder="Enter File Description" name="description" required />
+                                        <button type="submit" class="btn btn-danger" asp-controller="Uploads" asp-action="Index"><i class="nav-icon fa fa-upload"></i> @Applicationsettings.RECORD</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">@Applicationsettings.UPLOADED_SAMPLE</h3>
+                        </div>
+                        <div class="card-body contained-width">
+                            @if (Model!= null)
+                            {
+                                <hr />
+                                <table class="table table-striped  fixed-with-height">
+                                    <tr>
+                                        @foreach (DataColumn dc in Model.Columns)
+                                        {
+                                            <th>@dc.ColumnName</th>
+                                        }
+                                    </tr>
+                                    @foreach (DataRow dr in Model.Rows)
+                                    {
+                                        <tr>
+                                            @foreach (DataColumn dc in Model.Columns)
+                                            {
+                                                <td>@dr[dc.ColumnName]</td>
+                                            }
+                                        </tr>
+                                    }
+                                </table>
+                            }
+                            else
+                            {
+                                <caption>@Applicationsettings.NO_RECORDS_FOUND</caption>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

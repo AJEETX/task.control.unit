@@ -1,0 +1,195 @@
+﻿@model risk.control.system.Models.VendorInvestigationServiceType
+
+@{
+    ViewData["Title"] = @Applicationsettings.CREATE;
+    Layout = "/Views/Shared/AdminLTE/_FormLayout.cshtml";
+}
+<link href="~/css/bootstrap-multiselect.css" rel="stylesheet" />
+
+<section class="content pt-2">
+    <div class="container-fluid ">
+        <form id="create-form" asp-action="Create" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-truck"></i> Add @Applicationsettings.SERVICE</h3>
+                        </div>
+                        <div class="card-body">
+                            <form asp-action="Create">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                       
+                                        <div style="display:none" class="form-group">
+                                            <label asp-for="VendorId" class="control-label"></label>
+                                            <input asp-for="VendorId" class="form-control" value="@Model.Vendor.VendorId" />
+                                            <span asp-validation-for="VendorId" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <span class="input-group-label"> Line Of Business:</span>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" for="LineOfBusinessId"><i class="fas fa-business-time"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                                </div>
+                                                <select id="LineOfBusinessId" asp-for="LineOfBusinessId" class="form-control" asp-items="ViewBag.LineOfBusinessId" onchange="loadInvestigationServices(this)" required>
+                                                    <option value="">--- SELECT ---</option>
+                                                </select>
+                                                <span asp-validation-for="LineOfBusinessId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <span class="input-group-label"> Type of Service:</span>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" for="InvestigationServiceTypeId"><i class="fas fa-tools"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                                </div>
+                                                <select id="InvestigationServiceTypeId" name="InvestigationServiceTypeId" asp-for="InvestigationServiceTypeId" onchange="setInvestigationServices(this)" class="form-control" asp-items="ViewBag.InvestigationServiceTypeId" required>
+                                                    <option value="">--- SELECT ---</option>
+                                                </select>
+                                                <span asp-validation-for="InvestigationServiceTypeId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <span class="input-group-label"> Service Price (Rs.):</span>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" for="Price"> <i class="fas fa-rupee-sign"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                                </div>
+                                                <input asp-for="Price" class="form-control" type="number" placeholder="Enter Service Price" value="" required/>
+                                                <span asp-validation-for="Price" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <span class="input-group-label"> Country:</span>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" for="CountryId"><i class="fas fa-map-marked-alt"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                                </div>    <select asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId" onchange="loadState(this, false)" required>
+                                                    <option value="">--- SELECT ---</option>
+                                                </select>
+                                                <span asp-validation-for="CountryId" class="text-danger"></span>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <span class="input-group-label"> State:</span>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" for="StateId"><i class="fas fa-map-marker-alt"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                                </div>
+                                                <select asp-for="StateId" class="form-control" asp-items="ViewBag.StateId" onchange="loadDistrict(this, false)" required>
+                                                    <option value="">--- SELECT ---</option>
+                                                </select>
+                                                <span asp-validation-for="StateId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <span class="input-group-label"> District:</span>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" for="DistrictId"><i class="fas fa-city"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                                </div>
+                                                <select id="DistrictId" asp-for="DistrictId" class="form-control" asp-items="ViewBag.StateId" onchange="loadRemainingServicePinCode(this, false,'@Model.Vendor.VendorId', '@Model.LineOfBusinessId')" required>
+                                                    <option value="">--- SELECT ---</option>
+                                                </select>
+                                                <span asp-validation-for="DistrictId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label asp-for="SelectedMultiPincodeId" class="control-label"></label>
+                                                <select id="PinCodeId" asp-for="SelectedMultiPincodeId" class="form-control" asp-items="ViewBag.PinCodeId" multiple required>
+                                                </select>
+                                                <span asp-validation-for="SelectedMultiPincodeId" class="text-danger"></span>
+                                            </div>
+@*                                            <div class="input-group">
+                                                <span class="input-group-addon icon-custom"><i class="fa fa-flag"></i> pincodes</span>
+                                                @Html.ListBoxFor(m =>  
+                                                    m.SelectedMultiPincodeId, 
+                                                    (IEnumerable<SelectListItem>)(new[] { new SelectListItem() { Value = "0",Text=" SELECT PINCODES",Selected=true }}), 
+                                                    new { id = "PinCodeId", @class = "selectPincode show-tick form-control input-md" })
+                                            </div>*@
+                                        </div>
+                                        <div class="form-group text-right">
+                                            <a asp-controller="Vendors" asp-action="Service" asp-route-id="@Model.Vendor.VendorId" class="btn btn-secondary">
+                                                <i class="fa fa-window-close"></i>
+                                                @Applicationsettings.CANCEL
+                                            </a>
+                                            <button disabled id="create-pincode" type="submit" class="btn btn-success">
+                                                <i class="fas fa-truck"></i> Add Service
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/css/bootstrap-multiselect.js"></script>
+
+
+    <script>
+        $("#LineOfBusinessId").focus();
+
+        $.validator.setDefaults({
+            submitHandler: function (form) {
+                $.confirm({
+                    title: "Confirm Create",
+                    content: "Are you sure to create?",
+                    columnClass: 'medium',
+                    icon: 'fas fa-truck',
+                    type: 'green',
+                    closeIcon: true,
+                    buttons: {
+                        confirm: {
+                            text: "Create",
+                            btnClass: 'btn-success',
+                            action: function () {
+                                askConfirmation = false;
+                                form.submit();
+                            }
+                        },
+                        cancel: {
+                            text: "Cancel",
+                            btnClass: 'btn-default'
+                        }
+                    }
+                });
+            }
+        });
+
+        $(document).ready(function () {
+
+            $("#create-form").validate();
+
+            $('#PinCodeId').attr('data-live-search', true);
+
+            //// Enable multiple select.
+            $('#PinCodeId').attr('multiple', true);
+            $('#PinCodeId').attr('data-selected-text-format', 'count');
+
+        });
+    </script>
+
+}

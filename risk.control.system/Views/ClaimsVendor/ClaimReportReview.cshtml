@@ -1,0 +1,178 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="far fa-file-excel"></i> Re Allocate </h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="checkboxes" asp-action="GetInvestigateReportReview" method="get" enctype="multipart/form-data">
+                            <div class="col-md-12">
+                                <table id="customerTable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Id</th>
+                                            <th>Policy #</th>
+                                            <th>Document</th>
+                                            <th>Customer</th>
+                                            <th>Customer Name</th>
+                                            <th>Beneficiary</th>
+                                            <th>Beneficiary Name</th>
+                                            <th>Claim Type</th>
+                                            <th>Status</th>
+                                            <th>Stage</th>
+                                            <th>Created On</th>
+                                            <th>
+                                                Day(s) <i class="fa fa-asterisk" style="color:red;font-size:12px" title="Day since reported"></i>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button disabled id="allocatedcase" type="submit" class="btn btn-danger">
+                                            <i class="far fa-file-excel" aria-hidden="true"></i>
+                                            Re Allocate
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts    {
+    <script>
+        $(document).ready(function () {
+            var table = $("#customerTable").DataTable({
+                ajax: {
+                    url: '/api/ClaimsVendor/GetReviewReport',
+                    dataSrc: ''
+                },
+                columnDefs: [{
+                    'targets': 0,
+                    'searchable': false,
+                    'orderable': false,
+                    'className': 'dt-body-center',
+                    'render': function (data, type, full, meta) {
+                        return '<input type="checkbox" name="selectedcase[]" value="' + $('<div/>').text(data).html() + '">';
+                    }
+                }],
+                order: [[1, 'asc']],
+                fixedHeader: true,
+                processing: true,
+                paging: true,
+                language: {
+                    loadingRecords: '&nbsp;',
+                    processing: '<i class="fas fa-sync fa-spin fa-4x fa-fw"></i><span class="sr-only">Loading...</span>'
+                },
+                columns: [
+                    /* Name of the keys from
+                    data file source */
+                    {
+                        "sDefaultContent": "",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            var img = '<input name="selectedcase" class="selected-case" type="radio" id="' + row.id + '"  value="' + row.id + '"  />';
+                            return img;
+                        }
+                    },
+                    {
+                        "data": "id", "name": "Id", "bVisible": false
+                    },
+                    { "data": "policyNum" },
+                    {
+                        "sDefaultContent": "",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            var img = '<img src="' + row.document + '" src height="30" width="30" />';
+                            return img;
+                        }
+                    },
+                    {
+                        "sDefaultContent": "",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            var img = '<img src="' + row.customer + '" src height="30" width="30" />';
+                            return img;
+                        }
+                    },
+                    { "data": "name" },
+                    {
+                        "sDefaultContent": "",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            var img = '<img src="' + row.beneficiaryPhoto + '" src height="30" width="30" />';
+                            return img;
+                        }
+                    },
+                    { "data": "beneficiaryName" },
+                    { "data": "serviceType" },
+                    { "data": "status" },
+                    { "data": "location" },
+                    { "data": "created" },
+                    { "data": "timePending" },
+                ],
+                error: function (xhr, status, error) { alert('err ' + error) }
+            });
+
+            if ($("input[type='radio'].selected-case:checked").length) {
+                $("#allocatedcase").prop('disabled', false);
+            }
+            else {
+                $("#allocatedcase").prop('disabled', true);
+            }
+
+            // When user checks a radio button, Enable submit button
+            $("input[type='radio'].selected-case").change(function (e) {
+                if ($(this).is(":checked")) {
+                    $("#allocatedcase").prop('disabled', false);
+                }
+                else {
+                    $("#allocatedcase").prop('disabled', true);
+                }
+            });
+
+            // Handle click on checkbox to set state of "Select all" control
+            $('#customerTable tbody').on('change', 'input[type="radio"]', function () {
+                // If checkbox is not checked
+                if (this.checked) {
+                    $("#allocatedcase").prop('disabled', false);
+                } else {
+                    $("#allocatedcase").prop('disabled', true);
+                }
+            });
+
+            // Handle form submission event
+            $('#checkboxes').on('submit', function (e) {
+                var form = this;
+
+                // Iterate over all checkboxes in the table
+                table.$('input[type="checkbox"]').each(function () {
+                    // If checkbox doesn't exist in DOM
+                    if (!$.contains(document, this)) {
+                        // If checkbox is checked
+                        if (this.checked) {
+                            // Create a hidden element
+                            $(form).append(
+                                $('<input>')
+                                    .attr('type', 'hidden')
+                                    .attr('name', this.name)
+                                    .val(this.value)
+                            );
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

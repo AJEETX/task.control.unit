@@ -1,0 +1,31 @@
+﻿<!-- jQuery -->
+<script src="~/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="~/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="~/js/demo.js"></script>
+<script src="~/js/highcharts.js"></script>
+<script src="/js/exporting.js"></script>
+
+<script src="~/js/site.js"></script>
+<!-- Summernote -->
+@*<script src="~/plugins/summernote/summernote-bs4.min.js"></script>*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="~/plugins/summernote/summernote.js"></script>
+<script src="~/js/jqueryconfirm/dist/jquery-confirm.min.js"></script>
+<script src="~/js/jqueryconfirm/js/custom.jqueryconfirm.js"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script type="text/javascript" language="javascript">
+
+    function DisableBackButton() {
+        window.history.forward()
+    }
+    DisableBackButton();
+    window.onload = DisableBackButton;
+    window.onpageshow = function (evt) { if (evt.persisted) DisableBackButton() }
+    window.onunload = function () { void (0) }
+</script>

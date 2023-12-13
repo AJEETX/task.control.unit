@@ -1,0 +1,14 @@
+{
+  "Flight": "YES",
+  "DepartureAirport": "SINGH",
+  "DepartureAbvr": "MR AMEX",
+  "BoardingGate": "98798798798",
+  "BoardingTill": "2020-06-16T06:35:00",
+  "DepartureTime": "2020-06-16T07:05:00",
+  "Arrival": "2020-06-16T07:30:00",
+  "ArrivalAirport": "123 Paul Rd Mitcham",
+  "ArrivalAbvr": " VIC 3131",
+  "Class": "OK",
+  "ClassAdd": "(T)",
+  "Seat": "12D"
+}

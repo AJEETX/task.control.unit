@@ -1,0 +1,164 @@
+﻿@model LoginViewModel
+
+@{
+    ViewData["Title"] = "login: icheckify";
+
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>icheckify: login</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="~/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<style>
+    #watermark {
+        position: fixed;
+        z-index: 10000;
+        bottom:400px;
+        left:150px;
+        font-size: 30px;
+        font-weight:bold;
+        font-style:italic;
+        color: red;
+        transform: rotate(-40deg);
+        opacity: 0.2;
+    }
+    img.logo{
+        height: 40px !important;
+        width: 40px !important;
+        position:absolute;
+    }
+    #togglePassword {
+        cursor: pointer;
+        position: relative;
+        visibility: hidden;
+    }
+
+    #togglePassword:hover {
+        visibility: visible !important;
+    }
+
+    .login-form{
+        height:450px;
+    }
+
+    .signup-form {
+        height: 450px;
+    }
+</style>
+<body>
+    <div class="container">
+        <input type="checkbox" id="flip">
+        <div class="cover">
+            <div class="front">
+                <img src="~/agency/bgs.jpg" alt="">
+                <div class="text">
+                    <span class="text-2">Simple verification process</span>
+                </div>
+            </div>
+            <div class="back">
+                <img class="backImg" src="images/backImg.jpg" alt="">
+                <div class="text">
+                    <span class="text-1">Complete miles of journey <br> with one step</span>
+                    <span class="text-2">Let's get started</span>
+                </div>
+            </div>
+        </div>
+        <div class="forms">
+            <a href="https://hostedscan.com"><img src="https://hostedscan.com/hostedscan-badge-light.svg" alt="HostedScan | An automated vulnerability scanner" height="30px" width="auto" /></a>
+
+            <div class="form-content">
+                <div class="login-form">
+                    <img src="/img/iCheckifyLogo.png" height="40px" />
+                    <div id="watermark">
+                       - DEMO -
+                    </div>
+                    <div class="title">Login</div>
+                    <form style="padding-top:3rem;" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                        <div class="input-boxes">
+                            <div class="input-box">
+                                <i class="fas fa-envelope"></i>
+                                <input asp-for=Email id="email" type="email" placeholder="Enter your email" value="@Applicationsettings.CREATOR.EMAIL" autocomplete="off" required>
+                            </div>
+                            <div class="input-box">
+                                <i class="fas fa-lock"></i>
+                                <input asp-for=Password id="password" type="password" placeholder="Enter your password" value="@Applicationsettings.TestPassword"
+                                       autocomplete="off" required onfocus="myFunction(this, true)" onblur="myFunction(this, false)">
+                                       <span class="">
+                                    <i class="far fa-eye" id="togglePassword"></i>
+                                </span>
+                            </div>
+                            
+                            <p class="account">By clicking login, you agree to our <a href="#">Terms & Conditions!</a></p>
+                            <div class="button input-box">
+                                <button type="submit" class="btn btn-secondary btn-block"><span class="fa fa-key" aria-hidden="true"></span> Login</button>
+                            </div>
+                            <div class="text"><label for="flip" class="login-link">Forgot Password?</label></div>
+                        </div>
+                    </form>
+                    <div style="text-align: -webkit-center;">
+
+                        @if (Model?.Error != null)
+                        {
+                            <p class="account">
+                                <a  class="error"> @Model?.Error</a>
+                            </p>
+                        }
+                    </div>
+                </div>
+                <div class="signup-form">
+                    <img src="/img/iCheckifyLogo.png" height="40px" />
+
+                    <div class="title">Forgot Password</div>
+                    <form style="padding-top:3rem;" action="Forgot" method="post">
+                        <div class="input-boxes">
+                            <div class="input-box">
+                                <i class="fas fa-envelope"></i>
+                                <input name="useremail" id="useremail" type="email" placeholder="Enter your email" autocomplete="off" required>
+                            </div>
+                            <div class="input-box">
+                                <i class="fa fa-mobile" aria-hidden="true"></i>
+                                <input id="mobile" name="mobile" maxlength="14" type="text" placeholder="Phone # with country code"
+                                       oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                            </div>
+
+                            <div class="button input-box">
+                                <button type="submit" class="btn btn-secondary btn-block"> Reset Password</button>
+                            </div>
+                            <div class="text sign-up-text">Already have an account? <label for="flip" class="login-link">Login now</label></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    document.getElementById("password").focus();
+    const togglePassword = document.querySelector('#togglePassword');
+    function myFunction(x, show) {
+        if (show) {
+            togglePassword.style.visibility = "visible";
+        } else {
+            togglePassword.style.visibility = "hidden";
+        }
+    }
+    const password = document.querySelector('#password');
+
+    togglePassword.addEventListener('click', function (e) {
+        // toggle the type attribute
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        // toggle the eye slash icon
+        this.classList.toggle('fa-eye-slash');
+    });
+</script>
+</html>

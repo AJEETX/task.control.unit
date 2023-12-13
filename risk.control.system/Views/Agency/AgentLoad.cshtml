@@ -1,0 +1,99 @@
+﻿@using risk.control.system.AppConstant;
+@using risk.control.system.Models.ViewModel;
+@model List<VendorUserClaim>
+
+@{
+    ViewData["Title"] = @Applicationsettings.USER;
+}
+
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-user-friends"></i> Agent Workload</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="datatable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Agent Photo
+                                    </th>
+                                    <th>
+                                        Email
+                                    </th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Phone #
+                                    </th>
+                                    <th>
+                                        Address
+                                    </th>
+
+                                    <th>
+                                        District
+                                    </th>
+                                    <th>State</th>
+                                    <th>Country</th>
+                                    <th>
+                                        Pincode
+                                    </th>
+                                    <th>
+                                        Current Claims
+                                    </th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @if (item?.AgencyUser.ProfilePictureUrl is not null)
+                                            {
+                                                <img id="documentImage" class="form-Image" src="@item?.AgencyUser.ProfilePictureUrl">
+                                            }
+                                            else
+                                            {
+                                                <img id="documentImage" class="form-Image" src="@Applicationsettings.NO_IMAGE">
+                                            }
+                                        </td>
+                                        <td>
+                                            <a href="#"> @Html.DisplayFor(modelItem => item.AgencyUser.Email)</a>
+                                        </td>
+                                        <td>
+                                            @item.AgencyUser.FirstName  @item.AgencyUser.LastName
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.AgencyUser.PhoneNumber)
+                                        </td>
+                                        <td>@item.AgencyUser.Addressline</td>
+                                        <td>@item.AgencyUser.District.Name</td>
+                                        <td>@item.AgencyUser.State.Name</td>
+                                        <td>@item.AgencyUser.Country.Name</td>
+                                        <td>@item.AgencyUser.PinCode.Code</td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CurrentCaseCount)
+                                        </td>
+
+                                        <td>
+                                            <a class="btn btn-xs btn-info" asp-controller="AgentWorkload" asp-action="Open" asp-route-email="@item.AgencyUser.Email">
+                                                <i class="fas fa-search"></i> Details
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

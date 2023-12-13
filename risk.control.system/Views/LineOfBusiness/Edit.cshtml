@@ -1,0 +1,88 @@
+﻿@model risk.control.system.Models.LineOfBusiness
+
+@{
+    ViewData["Title"] = @Applicationsettings.EDIT;
+}
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-business-time"></i> Edit @Applicationsettings.LINE_OF_BUSINESS</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="create-form" asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="LineOfBusinessId" />
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Code" class="control-label"></label>
+                                <input asp-for="Code" class="form-control" />
+                                <span asp-validation-for="Code" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Created" class="control-label"></label>
+                                <input asp-for="Created" class="form-control" />
+                                <span asp-validation-for="Created" class="text-danger"></span>
+                            </div>
+                            <div class="form-group text-right">
+                                <a asp-action="Index" class="btn btn-secondary">
+                                    <i class="fa fa-window-close"></i>
+                                    @Applicationsettings.CANCEL
+                                </a>
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="fas fa-business-time"></i> @Applicationsettings.EDIT  @Applicationsettings.LINE_OF_BUSINESS
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+
+            var askConfirmation = true;
+            $('#create-form').submit(function (e) {
+                if (askConfirmation) {
+                    e.preventDefault();
+                    $.confirm({
+                        title: "Confirm Edit",
+                        content: "Are you sure to edit?",
+                        boxWidth: '30%',
+                        useBootstrap: false,
+                        icon: 'fas fa-business-time',
+                        type: 'orange',
+                        closeIcon: true,
+                        buttons: {
+                            confirm: {
+                                text: "Edit item",
+                                btnClass: 'btn-warning',
+                                action: function () {
+                                    askConfirmation = false;
+                                    $('#create-form').submit();
+                                }
+                            },
+                            cancel: {
+                                text: "Cancel",
+                                btnClass: 'btn-default'
+                            }
+                        }
+                    });
+                }
+            })
+        });
+    </script>
+}

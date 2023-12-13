@@ -1,0 +1,152 @@
+﻿@using System.Security.Claims;
+@using risk.control.system.Helpers;
+@inject ApplicationDbContext _context
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ApplicationUser appUser = (await UserManager.GetUserAsync(User));
+    ViewData["Title"] = "Dashboard";
+    var userEmail = User?.Identity?.Name;
+    var companyUser = _context.ClientCompanyApplicationUser.FirstOrDefault(c => c.Email == userEmail);
+    var vendorUser = _context.VendorApplicationUser.FirstOrDefault(c => c.Email == userEmail);
+    var userRole = User?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+
+}
+
+<style>
+    #total-expense {
+        background-color: green;
+        color: white;
+        padding: 2px 5px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+    .container-claim{
+        height: auto;
+        margin: 0 auto;
+        min-height: 20rem;
+    }
+
+    .container-claim-monthly{
+        height: auto;
+        margin: 0 auto;
+        min-height: 25rem;
+    }
+</style>
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-tachometer-alt"></i> Dashboard</h3>
+            </div>
+            <div class="card-body">
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card card-light">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-tachometer-alt"></i> Claims Bar Chart</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="container-claim" class="container-claim">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card card-light">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-tachometer-alt"></i> Claims Pie Chart</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="container-claim-pie" class="container-claim">
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card card-light">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-tachometer-alt"></i> Turn Around Time </h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="container-claim-tat" class="container-claim">
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card card-light">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-tachometer-alt"></i> Month-wise Claims</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="container-monthly-claim" class="container-claim">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                @{
+                    if (userRole !=null && (userRole.Value.Contains(AppRoles.PortalAdmin.ToString())
+                    || userRole.Value.Contains(AppRoles.CompanyAdmin.ToString())
+                    || userRole.Value.Contains(AppRoles.Assigner.ToString())
+                    || userRole.Value.Contains(AppRoles.AgencyAdmin.ToString())))
+                    {
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-light">
+                                    <div class="card-header">
+                                        <h3 class="card-title"><i class="fas fa-tachometer-alt"></i> Agency Current Case Count: Pie Chart</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="container-agency-pie" class="container-agency">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        GetWeekly('Claim', 'GetWeeklyClaim', 'container-claim');
+        GetWeeklyTat('Claim', 'GetClaimWeeklyTat', 'container-claim-tat');
+        GetWeeklyPie('Claim', 'GetWeeklyClaim', 'container-claim-pie');
+        GetWeeklyPie('Agency ', 'GetAgentClaim', 'container-agency-pie');
+
+        GetChart('Claim', 'GetClaimChart', 'container-monthly-claim')
+
+        $("#btnWeeklyReport").click(function () {
+            GetWeekly('Claim', 'GetWeeklyClaim', 'container-claim');
+        })
+
+        $("#btnMonthlyReport").click(function () {
+            GetMonthly('Claim', 'GetMonthlyClaim', 'container-claim');
+        })
+        $("#btnWeeklyPie").click(function () {
+            GetWeeklyPie('Claim', 'GetWeeklyClaim', 'container-claim-pie');
+        })
+        $("#btnMonthlyPie").click(function () {
+            GetMonthlyPie('Claim', 'GetMonthlyClaim', 'container-claim-pie');
+        })
+        $("#btnWeeklyTat").click(function () {
+            GetWeeklyTat('Claim', 'GetClaimWeeklyTat', 'container-claim-tat');
+        })
+        $("#btnMonthlyTat").click(function () {
+            //GetMonthly('Claim', 'GetClaimWeeklyTat', 'container-claim-tat');
+        })
+    });
+</script>

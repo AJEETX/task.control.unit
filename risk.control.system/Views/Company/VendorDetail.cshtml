@@ -1,0 +1,132 @@
+﻿@model risk.control.system.Models.Vendor
+
+@{
+    ViewData["Title"] = @Applicationsettings.DETAILS;
+}
+
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-folder-open"></i> Agency Detail</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Name)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Name)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Code)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Code)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Description)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Description)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.PhoneNumber)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.PhoneNumber)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Email)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Email)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Branch)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Branch)
+                                    </dd>
+                                   
+
+                                    <dt class="col-sm-5">
+                                        line of business
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @foreach (var service in Model.VendorInvestigationServiceTypes)
+                                        {
+                                            <span class="badge badge-light">@service.LineOfBusiness.Name</span>
+                                        }
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        Document
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @if (Model?.DocumentUrl is not null)
+                                        {
+                                            <img id="documentImage" class="form-Image" src="@Model?.DocumentUrl">
+                                        }
+                                        else
+                                        {
+                                            <img id="documentImage" class="form-Image" src="@Applicationsettings.NO_IMAGE">
+                                        }
+                                    </dd>
+                                    
+                                </dl>
+                            </div>
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Addressline)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Addressline)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.District)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.District.Name)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.State)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.State.Name)
+                                    </dd>
+                                    
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Country)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Country.Name)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.PinCode)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.PinCode.Name)
+                                    </dd>
+
+                                </dl>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <a asp-controller="Company" asp-action="@ViewBag.Backurl" asp-route-id="@Model.VendorId" class="btn btn-default"><i class="fas fa-arrow-left"></i> @Applicationsettings.BACK</a>
+ @*                               <a asp-controller="VendorUser" asp-action="Index" asp-route-id="@Model.VendorId" class="btn btn-success"><i class="fas fa-user-plus"></i>  @Applicationsettings.USER</a>
+                                <a asp-controller="Vendors" asp-action="Service" asp-route-id="@Model.VendorId" class="btn btn-success"><i class="fas fa-plus"></i>  @Applicationsettings.SERVICE</a>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

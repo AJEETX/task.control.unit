@@ -1,0 +1,61 @@
+﻿@model List<State>
+
+<section class="content pt-2">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-map-marker-alt"></i> @Applicationsettings.STATE</h3>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <a class="btn btn-success" asp-controller="State" asp-action="Create"><i class="fas fa-map-marker-alt"></i> @Applicationsettings.CREATE</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-list"></i> State List</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="datatable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th>State name</th>
+                                    <th>State code</th>
+                                    <th>Country name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var state in Model)
+                                {
+                                    <tr>
+                                        <td>@state.Name</td>
+                                        <td>@state.Code</td>
+                                        <td>@state.Country.Name</td>
+                                        <td>
+                                            <a class="btn btn-xs btn-warning" asp-action="Edit" asp-route-id="@state.StateId"><i class="fas fa-map-marker-alt"></i> @Applicationsettings.EDIT</a> &nbsp;
+                                            <a class="btn btn-xs btn-danger" asp-action="Delete" asp-route-id="@state.StateId"><i class="fas fa-trash"></i> @Applicationsettings.DELETE</a>
+                                            <input type="hidden" value="@state.StateId" />
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,275 @@
+﻿@model risk.control.system.Models.Vendor
+
+@{
+    ViewData["Title"] = @Applicationsettings.DETAILS;
+}
+
+<section class="content pt-2">
+    <input type="hidden" id="Latitude" asp-for="@Model.PinCode.Latitude" />
+    <input type="hidden" id="Longitude" asp-for="@Model.PinCode.Longitude" />
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-building"></i> @Applicationsettings.MANAGE_VENDOR</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    <dt class="col-sm-5">
+                                        Domain
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        <a href=""> @Html.DisplayFor(model => model.Email)</a>
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Name)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Name)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Code)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Code)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Description)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Description)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.PhoneNumber)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.PhoneNumber)
+                                    </dd>
+                                    
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Branch)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Branch)
+                                    </dd>
+                                    
+                                    </dd>
+
+                                </dl>
+                                <dl class="row">
+                                    <dt class="col-sm-5">
+                                        Document
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @if (Model?.DocumentUrl is not null)
+                                        {
+                                            <img id="profileImage" class="form-Image" src="@Model?.DocumentUrl">
+                                        }
+                                        else
+                                        {
+                                            <img id="profileImage" class="form-Image" src="@Applicationsettings.NO_IMAGE">
+                                        }
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Addressline)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Addressline)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.District)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.District.Name)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.State)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.State.Name)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Country)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Country.Name)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.PinCode)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.PinCode.Code)
+
+
+                                </dl>
+                            </div>
+                            <div class="col-md-6">
+                                Map View
+                                <div id="maps">
+                                </div>
+                                <div id="pop-face-map"></div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="card-body">
+
+                                    <table id="datatable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Line of business
+                                                </th>
+                                                <th>
+                                                    Service type
+                                                </th>
+                                                <th>
+                                                    Price
+                                                </th>
+                                                 <th>
+                                                    District
+                                                </th>
+                                                 <th>
+                                                    State
+                                                </th>
+                                                 <th>
+                                                    Pincodes
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.VendorInvestigationServiceTypes)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.LineOfBusiness.Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.InvestigationServiceType.Name)
+                                                    </td>
+                                                     <td>
+                                                        @Html.DisplayFor(modelItem => item.Price)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.District.Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.State.Name)
+                                                    </td>
+                                                     <td>
+                                                        @foreach(var pin in item.PincodeServices)
+                                                        {
+                                                            <span>
+                                                                @pin.Pincode
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <a asp-controller="Agency" asp-action="Edit" class="btn btn-warning"><i class='fas fa-building'></i> Manage Agency</a>
+                                @*<a asp-controller="Agency" asp-action="User" class="btn btn-success"><i class="fas fa-user-friends"></i>  @Applicationsettings.USER</a>
+                                <a asp-controller="Agency" asp-action="Service" class="btn btn-info"><i class="fas fa-plus"></i>  @Applicationsettings.SERVICE</a>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        var apiKey = 'AIzaSyDH8T9FvJ8n2LNwxkppRAeOq3Mx7I3qi1E';
+
+        function GetLoc() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success);
+            } else {
+                alert("There is Some Problem on your current browser to get Geo Location!");
+            }
+        }
+
+        async function success(position) {
+            const image =
+                "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+            const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+            // The location of Uluru
+            var element = document.getElementById("pop-face-map");
+            var bounds = new google.maps.LatLngBounds();
+
+            // The map, centered at branch
+            var map = new Map(element, {
+                scaleControl: true,
+                zoom: 14,
+                center: position,
+                mapId: "4504f8b37365c3d0",
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+            });
+            var b_lat = parseFloat($('#Latitude').val());
+            var b_lng = parseFloat($('#Longitude').val());
+            var b_response = $.ajax({
+                type: "GET",
+                url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${b_lat},${b_lng}&sensor=false&key=${apiKey}`,
+                async: false
+            }).responseText;
+
+            var b_current_data = JSON.parse(b_response);
+
+            var b_LatLng = new google.maps.LatLng(b_lat, b_lng);
+            var b_marker = new google.maps.Marker({
+                position: b_LatLng,
+                title: "Branch Location: " + b_current_data.results[0].formatted_address
+            });
+            b_marker.setMap(map);
+            var b_getInfoWindow = new google.maps.InfoWindow({
+                content: "<b>Branch Location</b><br/> " +
+                    b_current_data.results[0].formatted_address + ""
+            });
+            b_getInfoWindow.open(map, b_marker);
+
+            var lat = position.coords.latitude;
+            var long = position.coords.longitude;
+            var locresponse = $.ajax({
+                type: "GET",
+                url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&sensor=false&key=${apiKey}`,
+                async: false
+            }).responseText;
+            var current_data = JSON.parse(locresponse);
+
+            var LatLng = new google.maps.LatLng(lat, long);
+            var marker = new google.maps.Marker({
+                position: LatLng,
+                icon: image,
+                title: "You are here: " + current_data.results[0].formatted_address
+            });
+
+            marker.setMap(map);
+            var getInfoWindow = new google.maps.InfoWindow({
+                content: "<b>Your Current Location</b><br/> " +
+                    current_data.results[0].formatted_address + ""
+            });
+            getInfoWindow.open(map, marker);
+
+            bounds.extend(LatLng);
+            bounds.extend(b_LatLng);
+
+            map.fitBounds(bounds);
+            map.setCenter(bounds.getCenter());
+        }
+
+
+        GetLoc();
+    </script>
+}

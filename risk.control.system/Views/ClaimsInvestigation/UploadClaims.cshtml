@@ -1,0 +1,90 @@
+﻿@using System.Data;
+@model DataTable
+
+@{
+    ViewData["Title"] = Applicationsettings.UPLOAD;
+}
+
+<section class="content pt-2">
+    <div class="container-fluid">
+
+        <form id="upload-claims" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fa fa-upload"></i> Upload</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Upload Claims:</span>
+                                        <div class="input-group mb-3">
+                                            <img class="form-Image" id="documentImage" src="/img/no-policy.jpg">
+                                            <input accept=".zip" type="file" class="form-control" name="postedFile" />
+                                            <input type="text" autocomplete="off" placeholder="Enter File Description" name="description" value="sample upload" required />
+                                            <button type="submit" class="btn btn-info" asp-action="UploadClaims"><i class="nav-icon fa fa-upload"></i> Upload</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form id="save-claims" method="post">
+            <input type="hidden" name="filePath" value="@ViewBag.FilePath" />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title">Uploaded Claims</h3>
+                        </div>
+                        <div class="card-body">
+                            <table id="datatable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                                <thead>
+                                    <tr>
+                                        @foreach (DataColumn dc in Model?.Columns)
+                                        {
+                                            <th>@dc.ColumnName</th>
+                                        }
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (DataRow dr in Model?.Rows)
+                                    {
+                                        <tr>
+                                            @foreach (DataColumn dc in Model.Columns)
+                                            {
+                                                if (dc.ColumnName == "PDocument" || dc.ColumnName == "CPhoto" || dc.ColumnName == "BPhoto")
+                                                {
+                                                    <td> <img id="documentImage" class="form-Image" src="data:image/*;base64,@dr[dc.ColumnName]"></td>
+                                                }
+                                                else
+                                                {
+                                                    <td>@dr[dc.ColumnName]</td>
+                                                }
+                                            }
+                                            <td>X</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-success" asp-action="SaveUploadedClaims">
+                        <i class="fas fa-hand-pointer" aria-hidden="true"></i> Save as Draft
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

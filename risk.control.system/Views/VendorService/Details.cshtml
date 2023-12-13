@@ -1,0 +1,109 @@
+﻿@model risk.control.system.Models.VendorInvestigationServiceType
+
+@{
+    ViewData["Title"] = Applicationsettings.DETAILS;
+}
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-truck"></i> Manage Service</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.LineOfBusiness)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.LineOfBusiness.Name)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.InvestigationServiceType)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.InvestigationServiceType.Name)
+                                    </dd>
+
+                                    <dt class="col-sm-5">
+                                        Service Pincodes
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @foreach (var svc in Model?.PincodeServices)
+                                        {
+                                            var pinCodeDetail = svc.Pincode + "- " + svc.Name;
+                                            @Html.DisplayFor(modelItem => pinCodeDetail)
+                                            ;
+                                        }
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.District)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.District.Name)
+                                    </dd>
+
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.State)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.State.Name)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Country)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Country.Name)
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Price)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Price)
+                                    </dd>
+
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Created)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Created)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Updated)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Updated)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.UpdatedBy)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.UpdatedBy)
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <a asp-controller="Vendors" asp-action="Service" asp-route-id="@Model.Vendor.VendorId" class="btn btn-secondary">
+                                    <i class="fa fa-window-close"></i>
+                                    @Applicationsettings.CANCEL
+                                </a>
+                                <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model.VendorInvestigationServiceTypeId"><i class="fas fa-truck"></i> Manage Service</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>

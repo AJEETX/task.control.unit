@@ -1,0 +1,67 @@
+﻿@model IEnumerable<risk.control.system.Models.CostCentre>
+@{
+    ViewData["Title"] = @Applicationsettings.COST_CENTRE;
+}
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-money-check-alt"></i> @Applicationsettings.COST_CENTRE</h3>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <a class="btn btn-success" asp-action="Create"><i class="fas fa-money-check-alt"></i> @Applicationsettings.CREATE</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-list"></i> @Applicationsettings.COST_CENTRE List</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="datatable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Code
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.Name
+                                        </td>
+                                        <td>
+                                            @item.Code
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-xs btn-warning" asp-action="Edit" asp-route-id="@item.CostCentreId"><i class="fas fa-money-check-al"></i> @Applicationsettings.EDIT</a> &nbsp;
+                                            <a class="btn btn-xs btn-danger" asp-action="Delete" asp-route-id="@item.CostCentreId"><i class="fas fa-trash"></i> @Applicationsettings.DELETE</a>
+                                            <input type="hidden" value="@item.CostCentreId" />
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

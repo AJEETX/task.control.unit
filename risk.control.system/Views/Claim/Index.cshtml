@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using risk.control.system.Helpers;
+@inject IAuthorizationService AuthorizationService
+
+<div class="card">
+    <div id="viewAll" class="card-body table-responsive">
+<h4>claim permissions</h4>
+<br />
+@if ((AuthorizationService.AuthorizeAsync(User, Permissions.Claim.Create)).Result.Succeeded)
+{
+    <button class="btn btn-success">Create</button>
+}
+@if ((AuthorizationService.AuthorizeAsync(User, Permissions.Claim.View)).Result.Succeeded)
+{
+    <button class="btn btn-info">View</button>
+}
+@if ((AuthorizationService.AuthorizeAsync(User, Permissions.Claim.Edit)).Result.Succeeded)
+{
+    <button class="btn btn-warning">Modify</button>
+}
+@if ((AuthorizationService.AuthorizeAsync(User, Permissions.Claim.Delete)).Result.Succeeded)
+{
+    <button class="btn btn-danger">Delete</button>
+}
+    </div>
+</div>

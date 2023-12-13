@@ -1,0 +1,90 @@
+﻿@using risk.control.system.Models.ViewModel;
+@model VendorUserRolesViewModel
+<section class="content pt-2">
+    <div class="container-fluid ">
+        <form id="create-form" method="post" action="update">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-user-plus"></i> Edit Role: <i> @Model.UserName </i></h3>
+                        </div>
+                        <div class="card-body">
+                            <input hidden asp-for="@Model.UserId" />
+                            <input hidden asp-for="@Model.VendorId" />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    @for (int i = 0; i < Model.VendorUserRoleViewModel.Count; i++)
+                                    {
+                                        <div class="form-check m-1">
+                                            <input type="hidden" asp-for="@Model.VendorUserRoleViewModel[i].RoleId" />
+                                            <input type="hidden" asp-for="@Model.VendorUserRoleViewModel[i].RoleName" />
+                                            <input asp-for="@Model.VendorUserRoleViewModel[i].Selected" class="form-check-input" />
+                                            <label class="form-check-label" asp-for="@Model.VendorUserRoleViewModel[i].Selected">
+                                                @Model.VendorUserRoleViewModel[i].RoleName
+                                            </label>
+                                        </div>
+                                    }
+
+                                    <div asp-validation-summary="All" class="text-danger"></div>
+                                    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12  text-right">
+                                    <a asp-controller="VendorUser" asp-action="Index" asp-route-id="@Model.VendorId" class="btn btn-secondary">
+                                            <i class="fa fa-window-close"></i>
+                                            @Applicationsettings.CANCEL
+                                        </a>
+                                        <button type="submit" class="btn btn-warning">
+                                        <i class="fas fa-user-plus"></i> Edit Role
+                                        </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $.validator.setDefaults({
+            submitHandler: function (form) {
+                $.confirm({
+                    title: "Confirm Edit",
+                    content: "Are you sure to edit user role?",
+                    icon: 'fas fa-user-plus',
+                    columnClass: 'small',
+                    type: 'orange',
+                    closeIcon: true,
+                    typeAnimated: true,
+
+                    buttons: {
+                        confirm: {
+                            text: "Edit user role",
+                            btnClass: 'btn-warning',
+                            action: function () {
+                                askConfirmation = false;
+                                form.submit();
+                            }
+                        },
+                        cancel: {
+                            text: "Cancel",
+                            btnClass: 'btn-default'
+                        }
+                    }
+                });
+            }
+        });
+        $(document).ready(function () {
+            $("#create-form").validate();
+        });
+    </script>
+
+}

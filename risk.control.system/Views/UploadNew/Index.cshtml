@@ -1,0 +1,62 @@
+﻿@model FileUploadViewModel
+@{
+    ViewData["Title"] = Applicationsettings.UPLOAD;
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <form method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title">Upload List</h3>
+                        </div>
+                        <div class="card-body contained-width">
+                            <hr />
+                            @if (Model.FilesOnFileSystem.Count == 0)
+                            {
+                                <hr />
+                                <div class="col-md-12 text-center">
+                                    <caption>@Applicationsettings.NO_RECORDS_FOUND</caption>
+                                </div>
+                                <hr />
+                            }
+                            else
+                            {
+                                <table id="datatable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>File Type</th>
+                                            <th>Created On</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var file in Model.FilesOnFileSystem)
+                                        {
+                                            <tr>
+                                                <th>@file.Id</th>
+                                                <td>@file.Name</td>
+                                                <td>@file.Description</td>
+                                                <td>@file.FileType</td>
+                                                <td>@file.CreatedOn</td>
+                                                <td>
+                                                    <a type="button" class="btn  btn-xs btn-primary" asp-controller="File" asp-action="DownloadFileFromFileSystem" asp-route-id="@file.Id"><i class="nav-icon fa fa-download"></i> @Applicationsettings.DOWNLOAD</a>
+                                                    <a type="button" class="btn  btn-xs btn-danger" asp-controller="File" asp-action="DeleteFileFromFileSystem" asp-route-id="@file.Id"><i class="fas fa-trash"></i> @Applicationsettings.DELETE</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

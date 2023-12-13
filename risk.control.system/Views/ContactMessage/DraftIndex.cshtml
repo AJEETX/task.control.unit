@@ -1,0 +1,139 @@
+﻿@model IEnumerable<DraftMessage>
+@{
+    ViewData["Title"] = ViewData["ContentHeader"] = "Contact us inbox";
+}
+
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-success">
+                    <form id="checkboxes" asp-controller="ContactMessage" asp-action="Delete" method="post" id="listForm">
+
+                        <div class="card-header">
+                            <h3 class="card-title">Draft</h3>
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control" placeholder="Search Mail">
+                                    <div class="input-group-append">
+                                        <div class="btn btn-success">
+                                            <i class="fas fa-search"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="card-body p-0">
+                            <div class="table-responsive mailbox-messages">
+                                <table id="dataTbl" class="table message-table">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="5">
+                                                <input style="margin-right:10px;" type="checkbox" id="checkall" />
+                                                <div class="btn-group">
+                                                    <button disabled="disabled" id="manage-vendors" type="submit" class="btn btn-default"><i class="fa fa-trash"></i> Delete</button>
+                                                    <a asp-action="Index" class="btn btn-default"><i class="fa fa-refresh"></i> Refresh</a>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.Count() > 0)
+                                        {
+                                            @foreach (var message in Model)
+                                            {
+                                                var sentDateTime = message.SendDate.Value.ToString();
+                                                var time = DateTime.Now.Subtract(message.SendDate.Value).Minutes;
+                                                if (time < 60)
+                                                {
+                                                    sentDateTime = time.ToString() + " minute(s)";
+                                                }
+                                                else if (time < 24)
+                                                {
+                                                    time = DateTime.Now.Subtract(message.SendDate.Value).Hours;
+                                                    sentDateTime = time.ToString() + " hour(s)";
+                                                }
+                                                var star = message.Priority == ContactMessagePriority.IMPORTANT ? "fas fa-star text-warning" : "fas fa-star text-secondary";
+                                                star = message.Read && message.Priority == ContactMessagePriority.IMPORTANT ? "fas fa-star text-warning" : "fas fa-star text-secondary";
+                                                <tr class="@(message.Read == false ? "message-unread" : "message-read")">
+                                                    <td>
+                                                        <input id="@message.DraftMessageId" class="vendors" name="messages" type="checkbox" value="@message.DraftMessageId" checked="@message.SelectedForAction" />
+                                                    </td>
+                                                    <td class="mailbox-star">
+                                                        <a asp-action="Draft" asp-route-id="@message.DraftMessageId"><i class="@star"></i></a>
+                                                    </td>
+                                                    <td>@message.ReceipientEmail</td>
+                                                    <td class="message-title text-muted">
+                                                        <span>@message.Subject</span> - @message.Message
+                                                    </td>
+                                                    <td class="mailbox-attachment"><a asp-action="Details" asp-route-id="@message.DraftMessageId"><i class="fas fa-paperclip"></i></a></td>
+                                                    <td class="mailbox-date">@sentDateTime</td>
+
+                                                    <td class="mailbox-date">Drafted</td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr><td colspan="4">Empty</td></tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card-footer p-0">
+                            <div class="mailbox-controls">
+
+                                <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                    <i class="far fa-square"></i>
+                                </button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <i class="fas fa-reply"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <i class="fas fa-share"></i>
+                                    </button>
+                                </div>
+
+                                <button type="button" class="btn btn-default btn-sm">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                                <div class="float-right">
+                                    1-50/200
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

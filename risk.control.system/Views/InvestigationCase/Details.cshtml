@@ -1,0 +1,46 @@
+﻿@model risk.control.system.Models.InvestigationCase
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Case</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LineOfBusiness)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LineOfBusiness.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.InvestigationCaseStatus)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.InvestigationCaseStatus.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+    </dl>
+</div>
+    <a asp-action="Index" class="btn btn-secondary"><i class="fa fa-window-close"></i> Cancel</a> &nbsp;
+    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.InvestigationId"><i class="fas fa-pen"></i> Edit</a>

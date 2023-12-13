@@ -1,0 +1,99 @@
+﻿@model risk.control.system.Models.CaseLocation
+@{
+    ViewData["Title"] = Applicationsettings.DETAILS;
+}
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"> @Applicationsettings.VERIFY_LOCATION</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <dl class="row">
+            <dt class="col-sm-5">
+                Beneficiary Photo
+            </dt>
+            <dd class="col-sm-5">
+                @if (Model?.ProfilePicture is not null)
+                {
+                    <img id="documentImage" class="form-Image" src="data:image/*;base64,@(Convert.ToBase64String(Model?.ProfilePicture))">
+                }
+                else
+                {
+                    <img id="documentImage" class="form-Image" src="@Applicationsettings.NO_IMAGE">
+                }
+            </dd>
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.BeneficiaryName)
+            </dt>
+            <dd class="col-sm-5">
+                @Html.DisplayFor(model => model.BeneficiaryName)
+            </dd>
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.BeneficiaryRelation)
+            </dt>
+            <dd class="col-sm-5">
+                @Html.DisplayFor(model => model.BeneficiaryRelation.Name)
+            </dd>
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.BeneficiaryContactNumber)
+            </dt>
+            <dd class="col-sm-5">
+                @Html.DisplayFor(model => model.BeneficiaryContactNumber)
+            </dd>
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.BeneficiaryIncome)
+            </dt>
+            <dd class="col-sm-5">
+                @Html.DisplayFor(model => model.BeneficiaryIncome)
+            </dd>
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.State)
+            </dt>
+            <dd class="col-sm-5">
+                @Html.DisplayFor(model => model.State.Name)
+            </dd>
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.District)
+            </dt>
+            <dd class="col-sm-5">
+                @Html.DisplayFor(model => model.District.Name)
+            </dd>
+             <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.Country)
+            </dt>
+            <dd class="col-sm-5">
+                @Html.DisplayFor(model => model.Country.Name)
+            </dd>
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.Created)
+            </dt>
+            <dd class="col-sm-5">
+                @Html.DisplayFor(model => model.Created)
+            </dd>
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.Updated)
+            </dt>
+            <dd class="col-sm-5">
+                @Html.DisplayFor(model => model.Updated)
+            </dd>
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.UpdatedBy)
+            </dt>
+            <dd class="col-sm-5">
+                @Html.DisplayFor(model => model.UpdatedBy)
+            </dd>
+        </dl>
+    </div>
+    <div class="text-right">
+        <a asp-controller="ClaimsInvestigation" asp-action="AllocateToVendor" asp-route-selectedcase="@Model.ClaimsInvestigationId" class="btn btn-secondary">
+            <i class="fa fa-window-close"></i>
+            @Applicationsettings.BACK
+        </a>
+        @*<a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model.CaseLocationId"><i class="fas fa-pen"></i> @Applicationsettings.EDIT</a>*@
+    </div>
+</section>

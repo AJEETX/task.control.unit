@@ -1,0 +1,86 @@
+﻿@model IEnumerable<risk.control.system.Models.Audit>
+
+@{
+    ViewData["Title"] = @Applicationsettings.CLIENT_COMPANY;
+}
+
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title">@Applicationsettings.AUDIT_LOGS</h3>
+            </div>
+            <form asp-action="index">
+                <div class="card-body dataTable-search-form">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <input autocomplete="off" name="SearchString" type="text" class="form-control" placeholder="enter any details, e.g tablename, value, type, etc">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <button id="btnFilter" type="submit" class="btn btn-primary"><i class="fas fa-search"></i> @Applicationsettings.SEARCH</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-body">
+            <table id="datatable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Type)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TableName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DateTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.OldValues)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NewValues)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TableName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OldValues)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NewValues)
+                            </td>
+                            <td>
+                                <a class="btn btn-xs btn-info" asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-search"></i> @Applicationsettings.DETAILS</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

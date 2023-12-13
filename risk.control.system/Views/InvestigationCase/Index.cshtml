@@ -1,0 +1,173 @@
+﻿@model List<risk.control.system.Models.InvestigationCase>
+
+@{
+    ViewData["Title"] = @Applicationsettings.INVESTIGATION_CLAIMS_CASE;
+}
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">@Applicationsettings.INVESTIGATION_CLAIMS_CASE</h3>
+                    </div>
+                    <form asp-action="index">
+                        <div class="card-body dataTable-search-form">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input autocomplete="off" name="searchString" type="text" class="form-control" placeholder="enter investigation case name or any detail">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <button id="btnFilter" type="submit" class="btn btn-primary"><i class="fas fa-search"></i> @Applicationsettings.SEARCH</button>
+                                    <a class="btn btn-success" asp-controller="InvestigationCase" asp-action="Create"><i class="fas fa-plus"></i> @Applicationsettings.CREATE</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-light">
+                    <div class="card-body contained-width">
+                        <form asp-action="Broadcast" id="checkboxes" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-12">
+                                    @if (Model == null || Model.Count() == 0)
+                                    {
+                                        <caption>@Applicationsettings.NO_RECORDS_FOUND</caption>
+                                    }
+                                    else
+                                    {
+                                        <table class="table table-striped fixed-with-height">
+                                            <thead>
+                                                <tr>
+                                                    <th><input type="checkbox" id="checkall" /></th>
+                                                    <th>
+                                                        @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+                                                    </th>
+                                                    <th>
+                                                        @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.NameSortParm })
+                                                    </th>
+                                                    <th>
+                                                        @Html.ActionLink("Line of Business", "Index", new { sortOrder = ViewBag.NameSortParm })
+                                                    </th>
+                                                    <th>
+                                                        @Html.ActionLink("Case status", "Index", new { sortOrder = ViewBag.NameSortParm })
+                                                    </th>
+                                                    <th>
+                                                        @Html.ActionLink("Created", "Index", new { sortOrder = ViewBag.DateSortParm })
+                                                    </th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model)
+
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <input name="cbxcase" type="checkbox" />
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Name)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Description)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.LineOfBusiness.Name)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.InvestigationCaseStatus.Name)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Created)
+                                                        </td>
+                                                        <td>
+                                                            <a class="btn btn-xs btn-info" asp-action="Details" asp-route-id="@item.InvestigationId">
+                                                                <i class="fa fa-search"></i> View
+                                                            </a> &nbsp;
+                                                            <a class="btn btn-xs btn-warning" asp-action="Edit" asp-route-id="@item.InvestigationId">
+                                                                <i class="fas fa-pen"></i> Edit
+                                                            </a> &nbsp;
+                                                            <a class="btn btn-xs btn-danger" asp-action="Delete" asp-route-id="@item.InvestigationId">
+                                                                <i class="fas fa-trash"></i> Delete
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                </div>
+                            </div>
+                            @if (Model != null && Model?.Count() > 0)
+                            {
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card-footer text-right">
+                                            <a asp-action="Index" class="btn btn-secondary">
+                                                <i class="fa fa-window-close"></i>
+                                                @Applicationsettings.CANCEL
+                                            </a>
+                                            <button id="broadcast" disabled type="submit" class="btn btn-success">
+                                                <i class="fa fa-paper-plane" aria-hidden="true"></i> @Applicationsettings.BROADCAST
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <br />
+            @{
+                var PageNumber = (int)@ViewBag.PageNumber;
+
+                var PageSize = (int)@ViewBag.PageSize;
+
+                var TotalPages = (int)@ViewBag.TotalPages;
+
+                var ShowPrevious = (bool)@ViewBag.ShowPrevious;
+
+                var ShowNext = (bool)@ViewBag.ShowNext;
+
+                var ShowFirst = (bool)@ViewBag.ShowFirst;
+
+                var ShowLast = (bool)@ViewBag.ShowLast;
+            }
+            <ul class="pagination">
+                <li class="page-item @(!ShowFirst? "disabled":"")">
+                    <a asp-page="/pagination" asp-route-CurrentPage="1" class="page-link">
+                        <i class="fas fa-fast-backward"></i>
+                    </a>
+                </li>
+                <li class="page-item @(!ShowPrevious? "disabled":"")">
+                    <a asp-page="/pagination" asp-route-CurrentPage="@(PageNumber -1)" class="page-link">
+                        <i class="fas fa-step-backward"></i>
+                    </a>
+                </li>
+                <li class="page-item  @(!ShowNext? "disabled":"")">
+                    <a asp-page="/pagination" asp-route-CurrentPage="@(PageNumber + 1)" class="page-link">
+                        <i class="fas fa-step-forward"></i>
+                    </a>
+                </li>
+
+                <li class="page-item  @(!ShowLast? "disabled":"")">
+                    <a asp-page="/pagination" asp-route-CurrentPage="@TotalPages" class="page-link">
+                        <i class="fas fa-fast-forward"></i>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</section>

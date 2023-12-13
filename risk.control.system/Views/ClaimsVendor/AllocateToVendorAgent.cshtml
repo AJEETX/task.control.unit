@@ -1,0 +1,218 @@
+﻿@model risk.control.system.Models.ClaimsInvestigation
+
+@{
+    ViewData["Title"] = "Details";
+}
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-list"></i> Claim Description</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <dl class="row">
+
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.CustomerDetail.CustomerName)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.CustomerDetail.CustomerName)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        Phone #
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.CustomerDetail.ContactNumber)
+                                    </dd>
+
+                                    <dt class="col-sm-5">
+                                        PinCode
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.CustomerDetail.PinCode.Name)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.CustomerDetail.District)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.CustomerDetail.District.Name)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        Policy Document
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @if (Model?.PolicyDetail.DocumentImage is not null)
+                                        {
+                                            <img id="documentImage" class="form-Image" src="data:image/*;base64,@(Convert.ToBase64String(Model?.PolicyDetail.DocumentImage))">
+                                        }
+                                        else
+                                        {
+                                            <img id="documentImage" class="form-Image" src="@Applicationsettings.NO_IMAGE">
+                                        }
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    
+                                    <dt class="col-sm-5">
+                                        Customer Photo
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @if (Model?.CustomerDetail.ProfilePicture is not null)
+                                        {
+                                            <img id="documentImage" class="form-Image" src="data:image/*;base64,@(Convert.ToBase64String(Model?.CustomerDetail.ProfilePicture))">
+                                        }
+                                        else
+                                        {
+                                            <img id="documentImage" class="form-Image" src="@Applicationsettings.NO_IMAGE">
+                                        }
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.CustomerDetail.CustomerIncome)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.CustomerDetail.CustomerIncome)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.CustomerDetail.CustomerOccupation)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.CustomerDetail.CustomerOccupation)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.CustomerDetail.CustomerEducation)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.CustomerDetail.CustomerEducation)
+                                    </dd>
+ 
+                                </dl>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-list"></i> @Applicationsettings.VERIFICTION_LOCATIONS</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="radioButtons" asp-action="SelectVendorAgent" method="post" enctype="multipart/form-data">
+                            <input type="hidden" id="claimId" name="claimId" value="@Model.ClaimsInvestigationId" />
+                            <div class="col-md-12">
+                                <table id="datatable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>
+                                                Benficiary Photo
+                                            </th>
+                                            <th>
+                                                Benficiary Name
+                                            </th>
+                                            <th>
+                                                Benficiary Relation
+                                            </th>
+                                            <th>
+                                                Phone #
+                                            </th>
+                                            <th>
+                                                Date of Birth
+                                            </th>
+                                            <th>
+                                                Address
+                                            </th>
+                                            <th>
+                                                District
+                                            </th>
+                                            <th>
+                                                State
+                                            </th>
+
+                                            <th>
+                                                Country
+                                            </th>
+                                            <th>
+                                                Pincode
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.CaseLocations)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <input id="selectedcase" name="selectedcase" class="selected-case" type="radio" value="@item.CaseLocationId" />
+                                                </td>
+                                                <td>
+                                                    @if (item?.ProfilePicture is not null)
+                                                    {
+                                                        <img id="documentImage" class="form-Image" src="data:image/*;base64,@(Convert.ToBase64String(item?.ProfilePicture))">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img id="documentImage" class="form-Image" src="/img/user.png">
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.BeneficiaryName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.BeneficiaryRelation.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.BeneficiaryContactNumber)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.BeneficiaryDateOfBirth)
+                                                </td>
+                                                <td>
+                                                    @item.Addressline @item.Addressline2
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.District.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.State.Name)
+                                                </td>
+
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Country.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.PinCode.Code)
+                                                </td>
+                                               
+
+                                            </tr>
+                                        }
+                                    </tbody>
+
+                                </table>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <a asp-action="Index" class="btn btn-default"><i class="fas fa-arrow-left"></i> @Applicationsettings.BACK</a> &nbsp;
+
+                                        
+                                        <button disabled="disabled" id="allocate-case" type="submit" class="btn btn-success">
+                                            <i class="fas fa-thumbs-up" aria-hidden="true"></i> Allocate To Agent
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

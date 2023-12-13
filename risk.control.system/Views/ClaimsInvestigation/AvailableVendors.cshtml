@@ -1,0 +1,135 @@
+﻿@model IEnumerable<risk.control.system.Models.Vendor>
+
+@{
+    ViewData["Title"] = @Applicationsettings.SERVICE;
+}
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="AvailableVendors">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-list"></i> @Applicationsettings.AVAILABLE_VENDORS</h3>
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm">
+                                    <input autocomplete="off" name="SearchString" type="text" class="form-control" placeholder="search">
+                                    <div class="input-group-append">
+                                        <div onclick="this.parentNode.submit()" class="btn btn-success">
+                                            <i class="fas fa-search"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="@ViewBag.CompanyId" />
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <a asp-controller="ClientCompany" asp-action="Details" asp-route-id="@ViewBag.CompanyId" class="btn btn-secondary"><i class='fas fa-undo'></i> @Applicationsettings.BACK</a>
+                                    <a asp-controller="ClientCompany" asp-action="EmpanelledVendors" asp-route-id="@ViewBag.CompanyId" class="btn btn-success"><i class="fas fa-thumbs-up"></i>  @Applicationsettings.EMPANEL</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-body">
+                        <form id="checkboxes" asp-action="AvailableVendors" method="post" asp-route-id="@ViewBag.CompanyId" enctype="multipart/form-data">
+                            <input type="hidden" id="@ViewBag.CompanyId" />
+                            
+                                <table id="datatable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" id="checkall" /></th>
+
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Document)
+                                            </th>
+                                            <th>
+                                                @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.CodeSortParm })
+                                            </th>
+                                            <th>
+                                                @Html.ActionLink("Code", "Index", new { sortOrder = ViewBag.CodeSortParm })
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.PhoneNumber)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Email)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Addressline)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.State)
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <input id="@item.VendorId" class="vendors" name="vendors" type="checkbox" value="@item.VendorId" checked="@item.SelectedByCompany" />
+                                                </td>
+                                                <td>
+                                                    @if (item?.DocumentImage is not null)
+                                                    {
+                                                        <img id="documentImage" class="table-row-image" src="data:image/*;base64,@(Convert.ToBase64String(item?.DocumentImage))">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img id="documentImage" class="table-row-image" src="@Applicationsettings.NO_IMAGE">
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Code)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Email)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Addressline)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.State.Name)
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-xs btn-info" asp-action="VendorDetail" asp-route-backurl="AvailableVendors" asp-route-id="@item.VendorId" asp-route-CompanyId="@ViewBag.CompanyId">
+                                                        <i class="fa fa-search"></i> @Applicationsettings.DETAILS
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+
+                                </table>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button disabled="disabled" id="manage-vendors" type="submit" class="btn btn-success">
+                                            <i class="fas fa-thumbs-up" aria-hidden="true"></i> @Applicationsettings.EMPANEL
+                                        </button>
+                                    </div>
+                                </div>
+                        </form>
+                        <br />
+                        <br />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

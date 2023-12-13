@@ -1,0 +1,321 @@
+﻿@model ClaimTransactionModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+<style>
+    body {
+        background-color: #eee;
+        font-family: "Poppins", sans-serif;
+        font-weight: 300;
+    }
+
+    .container {
+        width: 100%;
+        padding-bottom:1rem;
+    }
+
+    .progresses {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .line {
+        width: 100%;
+        height: 6px;
+        background: lightgrey;
+    }
+
+
+    .steps {
+        display: flex;
+        background-color: grey;
+        color: #fff;
+        font-size: 14px;
+        width: 80px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+    .steps2 {
+        display: flex;
+        background-color: lightgray;
+        color: #fff;
+        font-size: 14px;
+        width: 80px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+</style>
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="article" class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-pen-alt"></i> Add New</h3>
+                    </div>
+                    @{
+                        string address = string.Empty;
+                        string baddress = string.Empty;
+                        int currentAgeinYrs = 0;                        
+
+                        <div class="card-body">
+                            <article>
+                                <div class="bb-blog-inner">
+                                    
+                                    <div class="container d-flex justify-content-center align-items-center">
+
+                                        <div class="progresses">
+
+
+                                            <div class="steps">
+                                                <span> <i class="far fa-file-powerpoint"></i></span>
+                                            </div>
+
+                                            <span class="line"></span>
+
+                                            <div class="steps2">
+                                                <span class="font-weight-bold"><i class="fa fa-user-plus"></i></span>
+                                            </div>
+
+
+                                            <span class="line"></span>
+
+                                            <div class="steps2">
+                                                <span class="font-weight-bold"><i class="fas fa-user-tie"></i></span>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    
+                                    <div class="card card-solid">
+                                        
+                                        <div class="card-body pb-0">
+                                            <div class="row">
+                                                <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                                                    <div class="card bg-light d-flex flex-fill">
+                                                        <div class="card-header text-muted border-bottom-0">
+                                                            <i class="far fa-file-powerpoint"></i> Policy Details
+                                                        </div>
+                                                        <div class="card-body pt-0">
+                                                            <div class="row">
+                                                                <div class="col-7">
+                                                                    <h2 class="lead"><b>...</b></h2>
+                                                                    <p class="text-muted text-sm">
+                                                                        <b>Claim Type: </b>...
+                                                                    </p>
+                                                                    <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-money-bill-wave"></i>
+                                                                            </span>
+                                                                            Amount: <i class="fas fa-rupee-sign"></i>...
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-tools"></i>
+                                                                            </span>
+                                                                            Service: ...
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-money-check-alt"></i>
+                                                                            </span>
+                                                                            Budget center:...
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-sun"></i>
+                                                                            </span>
+                                                                            Reason: ...
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="far fa-clock"></i>
+                                                                            </span>
+                                                                            Issue Date: dd-MMM-yyyy
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-5 text-center">
+                                                                    <img id="documentImage" alt="user-avatar"
+                                                                         class="img-circle img-fluid form-Image" src="/img/no-document.png">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <div class="text-right">
+
+                                                                <form id="create-form" asp-action="CaseReadyToAssign">
+                                                                    <a class="btn btn-success" asp-controller="ClaimsInvestigation" asp-action="CreatePolicy"><i class="far fa-file-powerpoint"></i> Add Policy</a>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                                                    <div class="card bg-light d-flex flex-fill">
+                                                        <div class="card-header text-muted border-bottom-0">
+                                                            <i class="fa fa-user-plus"></i> Customer Details
+                                                        </div>
+                                                        <div class="card-body pt-0">
+                                                            <div class="row">
+                                                                <div class="col-7">
+                                                                    <h2 class="lead" style="color:lightgray"><b></b></h2>
+                                                                    <p class="text-muted text-sm">
+                                                                        <b style="color:lightgray"></b>
+                                                                    </p>
+                                                                    <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                            </span>
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                            </span>
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                            </span>
+                                                                        </li>
+
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                            </span>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-5 text-center">
+                                                                    <img id="profileImage" class="form-Image" src="/img/user.png">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <div class="text-right">
+
+                                                                <form id="create-form" asp-action="CaseReadyToAssign">
+                                                                    <a style="pointer-events:none;color:lightgrey;" class="btn btn-outline-secondary"><i class="fa fa-user-plus"></i> Customer</a>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                                                    <div class="card bg-light d-flex flex-fill">
+                                                        <div class="card-header text-muted border-bottom-0">
+                                                            <i class="fas fa-user-tie"></i>  Beneficiary Details
+                                                        </div>
+                                                        <div class="card-body pt-0">
+                                                            <div class="row">
+                                                                <div class="col-7">
+                                                                    <h2 class="lead" style="color:lightgray"><b></b></h2>
+                                                                    <p class="text-muted text-sm">
+                                                                        <b style="color:lightgray"></b>
+                                                                    </p>
+                                                                    <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                            </span>
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                            </span>
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                            </span>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-5 text-center">
+
+                                                                    <img class="form-Image" id="profileImage" src="/img/user.png">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <div class="text-right">
+
+                                                                <form id="create-form" asp-action="CaseReadyToAssign">
+                                                                    <a style="pointer-events:none;color:lightgrey;" class="btn btn-outline-secondary"><i class="fas fa-user-tie"></i> Beneficiary</a>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- class bb-blog-inner -->
+                            </article>
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+
+                                    <form id="create-form" asp-action="CaseReadyToAssign">
+                                        <a asp-action="Index" asp-controller="Dashboard" class="btn btn-secondary">
+                                            <i class="fa fa-window-close"></i>
+                                            @Applicationsettings.CANCEL
+                                        </a> &nbsp;&nbsp;&nbsp;
+                                       
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+
+            var askConfirmation = true;
+            $('#create-form').submit(function (e) {
+                if (askConfirmation) {
+                    e.preventDefault();
+                    $.confirm({
+                        title: "Confirm Set To Ready",
+                        content: "Are you sure?",
+                        columnClass: 'medium',
+                        icon: 'fas fa-thumbtack',
+                        closeIcon: true,
+                        type: 'red',
+                        buttons: {
+                            confirm: {
+                                text: "Set Ready To Assign",
+                                btnClass: 'btn-danger',
+                                action: function () {
+                                    askConfirmation = false;
+                                    $('#create-form').submit();
+                                }
+                            },
+                            cancel: {
+                                text: "Cancel",
+                                btnClass: 'btn-default'
+                            }
+                        }
+                    });
+                }
+            })
+
+        });
+    </script>
+}

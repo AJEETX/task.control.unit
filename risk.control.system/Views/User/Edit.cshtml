@@ -1,0 +1,217 @@
+﻿@model risk.control.system.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = @Applicationsettings.EDIT;
+    Layout = "/Views/Shared/AdminLTE/_FormLayout.cshtml";
+}
+<section class="content pt-2">
+    <div class="container-fluid ">
+        <form id="create-form" asp-action="Edit" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-user-plus"></i> Edit  User</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <input type="hidden" asp-for="Id" />
+                                    
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Email:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="email"><i class="fas fa-at"></i> <i class="fa fa-asterisk asterik-style" style="color:#e9ecef;"></i></span>
+                                            </div>
+                                            <input readonly asp-for="Email" class="form-control readonly-input" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Profile Photo:</span>
+                                        <div class="input-group mb-3">
+
+                                            @if (Model?.ProfilePictureUrl is not null)
+                                            {
+                                                <img id="ProfileImage" class="form-Image" src="@Model?.ProfilePictureUrl">
+                                            }
+                                            else
+                                            {
+                                                <img id="ProfileImage" class="form-Image" src="/img/user.png">
+                                            }
+
+                                            <input asp-for="ProfileImage" class="form-control" type="file" onchange="document.getElementById('ProfileImage').src = window.URL.createObjectURL(this.files[0])" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="input-group-label"> First Name:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="FirstName"><i class="fa fa-user"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+                                            <input type="text" asp-for="FirstName" class="form-control title-name" required placeholder="First Name" maxlength="20">
+                                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Last Name:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="LastName"> <i class="fa fa-user"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+                                            <input type="text" asp-for="LastName" class="form-control title-name" required placeholder="Last Name" maxlength="20">
+                                            <span asp-validation-for="LastName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Phone #:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="PhoneNumber"><i class="fas fa-phone"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+                                            <input type="text" asp-for="PhoneNumber" class="form-control" required maxlength="14" placeholder="Phone # with country code"
+                                                   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Country:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" for="CountryId"><i class="fas fa-map-marked-alt"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>    <select asp-for="CountryId" class="form-control" id="CountryId" asp-items="ViewBag.CountryId" onchange="loadState(this)" required>
+                                                <option value="">--- SELECT ---</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <span class="input-group-label"> State:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" for="StateId"><i class="fas fa-map-marker-alt"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+                                            <select id="StateId" asp-for="StateId" class="form-control" asp-items="ViewBag.StateId" onchange="loadDistrict(this)" required>
+                                                <option value="">--- SELECT ---</option>
+                                            </select>
+
+                                            <span asp-validation-for="StateId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <span class="input-group-label"> District:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" for="DistrictId"><i class="fas fa-city"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+
+                                            <select id="DistrictId" asp-for="DistrictId" class="form-control" asp-items="ViewBag.DistrictId" onchange="loadPinCode(this)" required>
+                                                <option value="">--- SELECT ---</option>
+                                            </select>
+
+                                            <span asp-validation-for="DistrictId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Pincode:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" for="PinCodeId"><i class="fas fa-map-pin"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+                                            <select id="PinCodeId" asp-for="PinCodeId" class="form-control" asp-items="ViewBag.PinCodeId" required>
+                                                <option value="">--- SELECT PINCODE ---</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Address:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="Addressline"><i class="fa fa-home"></i>  <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+                                            <input type="text" asp-for="Addressline" class="form-control" required placeholder="Enter Address line" maxlength="20" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Status:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-toggle-on"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+                                            <div class="input-group-prepend">
+                                            </div>
+                                            <span class="checkbox">
+                                                <input asp-for="Active" type="checkbox" data-toggle="toggle" data-on="<i class='fa fa-play'></i> Active " data-off="<i class='fa fa-pause'></i> Inactive" data-onstyle="success" data-offstyle="danger">
+
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group text-right">
+                                        <a asp-controller="User" asp-action="Index" class="btn btn-secondary">
+                                            <i class="fa fa-window-close"></i>
+                                            @Applicationsettings.CANCEL
+                                        </a>
+                                        <button type="submit" class="btn btn-warning">
+                                            <i class="fas fa-user-plus"></i> Edit User
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $.validator.setDefaults({
+            submitHandler: function (form) {
+                $.confirm({
+                    title: "Confirm User Edit",
+                    content: "Are you sure?",
+                    columnClass: 'medium',
+                    icon: 'fas fa-user-plus',
+                    type: 'orange',
+                    closeIcon: true,
+                    buttons: {
+                        confirm: {
+                            text: "Edit",
+                            btnClass: 'btn-warning',
+                            action: function () {
+                                form.submit();
+                            }
+                        },
+                        cancel: {
+                            text: "Cancel",
+                            btnClass: 'btn-default'
+                        }
+                    }
+                });
+            }
+        });
+        $(document).ready(function () {
+            $("#create-form").validate();
+
+        });
+    </script>
+}

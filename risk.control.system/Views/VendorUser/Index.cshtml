@@ -1,0 +1,140 @@
+﻿@{
+    ViewData["Title"] = @Applicationsettings.USER;
+}
+<style>
+
+</style>
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-user-friends"></i> Manage Agency User</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <a id="create-agency-user" class="btn btn-success" href='#'><i class="fas fa-user-plus"></i> @Applicationsettings.CREATE User</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-user-friends"></i> Manage Users</h3>
+                    </div>
+                    <div class="card-body">
+                        <input type="hidden" id="vendorId" value="@ViewData["vendorId"]" />
+                        <table id="customerTable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Photo</th>
+                                    <th>Email</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Address</th>
+                                    <th>District</th>
+                                    <th>State</th>
+                                    <th>Country</th>
+                                    <th>Pincode</th>
+                                    <th>Active</th>
+                                    <th>Roles</th>
+                                    <th>Actions</th>
+
+                                </tr>
+                            </thead>
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group text-right">
+                    <a id="back-button" class="btn btn-default"><i class="fas fa-arrow-left"></i> @Applicationsettings.BACK</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts    
+{
+    <script>
+        $(document).ready(function () {
+            var vendor =  $('#vendorId').val();
+            $('a#create-agency-user').attr("href", "/VendorApplicationUsers/Create?id=" + vendor + "");
+            $('a#back-button').attr("href", "/Vendors/Details/" + vendor + "");
+
+            $("#customerTable").DataTable({
+                ajax: {
+                    url: '/api/Agency/GetCompanyAgencyUser?id=' + $('#vendorId').val(),
+                    dataSrc: ''
+                },
+                fixedHeader: true,
+                processing: true,
+                paging: true,
+                language: {
+                    loadingRecords: '&nbsp;',
+                    processing: '<i class="fas fa-sync fa-spin fa-4x fa-fw"></i><span class="sr-only">Loading...</span>'
+                },
+                columns: [
+                    /* Name of the keys from
+                    data file source */
+                    {
+                        "data": "id", "name": "Id", "bVisible": false
+                    },
+                    {
+                        "sDefaultContent": "",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            var img = '<img src="' + row.photo + '" src height="30" width="30" />';
+                            return img;
+                        }
+                    },
+                    { "data": "email" },
+                    { "data": "name" },
+                    { "data": "phone" },
+                    { "data": "addressline" },
+                    { "data": "district" },
+                    { "data": "state" },
+                    { "data": "country" },
+                    { "data": "pincode" },
+                    {
+                        "sDefaultContent": "",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            var buttons = "";
+                            buttons += '<span class="checkbox">'
+                            if (row.active) {
+                                buttons += '<input type="checkbox" checked disabled />'
+                            } else {
+                                buttons += '<input type="checkbox" disabled/>'
+                            }
+                            buttons += '</span>'
+                            return buttons;
+                        }
+                    },
+                    { "data": "roles" },
+                    {
+                        "sDefaultContent": "",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            var buttons = "";
+                            buttons += '<a href="/VendorApplicationUsers/Edit?userId=' + row.id + '" class="btn btn-xs btn-warning"><i class="fas fa-pen"></i> Edit</a>&nbsp;'
+                            buttons += '<a href="/VendorApplicationUsers/UserRoles?userId=' + row.id + '"  class="btn btn-xs btn-info"><i class="fas fa-pen"></i> Roles</a>'
+                            return buttons;
+                        }
+                    }
+                ],
+                error: function (xhr, status, error) { alert('err ' + error) }
+            });
+        });
+    </script>
+}

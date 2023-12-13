@@ -1,0 +1,108 @@
+﻿@{
+    ViewData["Title"] = @Applicationsettings.USER;
+}
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-user-friends"></i> Manage Users</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="customerTable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Photo</th>
+                                    <th>Email</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Address</th>
+                                    <th>District</th>
+                                    <th>State</th>
+                                    <th>Country</th>
+                                    <th>Pincode</th>
+                                    <th>Active</th>
+                                    <th>Roles</th>
+                                    <th>Actions</th>
+
+                                </tr>
+                            </thead>
+                           
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts    {
+    <script>
+        $(document).ready(function () {
+            $("#customerTable").DataTable({
+                ajax: {
+                    url: '/api/Company/AllUsers',
+                    dataSrc: ''
+                },
+                fixedHeader: true,
+                processing: true,
+                paging: true,
+                language: {
+                    loadingRecords: '&nbsp;',
+                    processing: '<i class="fas fa-sync fa-spin fa-4x fa-fw"></i><span class="sr-only">Loading...</span>'
+                },
+                columns: [
+                    /* Name of the keys from
+                    data file source */
+                    {
+                        "data": "id", "name": "Id", "bVisible": false
+                    },
+                    {
+                        "sDefaultContent": "",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            var img = '<img src="' + row.photo + '" src height="30" width="30" />';
+                            return img;
+                        }
+                    },
+                    { "data": "email" },
+                    { "data": "name" },
+                    { "data": "phone" },
+                    { "data": "addressline" },
+                    { "data": "district" },
+                    { "data": "state" },
+                    { "data": "country" },
+                    { "data": "pincode" },
+                    {
+                        "sDefaultContent": "",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            var buttons = "";
+                            buttons += '<span class="checkbox">'
+                            if (row.active) {
+                                buttons += '<input type="checkbox" checked disabled />'
+                            }else{
+                                buttons += '<input type="checkbox" disabled/>'
+                            }
+                            buttons += '</span>'
+                            return buttons;
+                        }
+                    },
+                    { "data": "roles" },
+                    {
+                        "sDefaultContent": "",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            var buttons = "";
+                            buttons += '<a href="/Company/EditUser?userId=' + row.id + '" class="btn btn-xs btn-warning"><i class="fas fa-pen"></i> Edit</a>&nbsp;'
+                            buttons += '<a href="/Company/UserRoles?userId=' + row.id + '"  class="btn btn-xs btn-info"><i class="fas fa-pen"></i> Roles</a>'
+                            return buttons;
+                        }
+                    }
+                ],
+                error: function (xhr, status, error) { alert('err ' + error) }
+            });
+        });
+    </script>
+}

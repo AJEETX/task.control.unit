@@ -1,0 +1,155 @@
+﻿@using System.Web;
+@model IEnumerable<InboxMessage>
+@{
+    ViewData["Title"] = "Inbox";
+}
+<style>
+    #dataTbl tbody {
+        overflow-y: auto;
+    }
+   
+</style>
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-inbox"></i> Inbox</h3>
+                    </div>
+                    <form id="checkboxes" asp-controller="ContactMessage" asp-action="InboxDelete" method="post" id="listForm">
+                        <div class="card-body">
+                            <div class="table-responsive mailbox-messages">
+                                <table id="datatable" class="table message-table table-bordered dt-responsive nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th id="table-header" colspan="6" style="background-color:#fff !important;">
+                                                <input style="margin-right:10px;" type="checkbox" id="checkall" />
+                                                <div class="btn-group">
+                                                    <button disabled="disabled" id="manage-vendors" type="submit" class="btn btn-default"><i class="fa fa-trash"></i> Delete</button>
+                                                    <a asp-action="Index" class="btn btn-default"><i class="fas fa-sync-alt"></i> Refresh</a>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>select</th>
+                                            <th>priority</th>
+                                            <th>From</th>
+                                            <th>Subject</th>
+                                            <th><i class='fas fa-paperclip'></i></th>
+                                            <th><i class="fas fa-clock"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.Count() > 0)
+                                        {
+                                            @foreach (var message in Model)
+                                            {
+                                                var sentDateTime = message.SendDate.Value.ToString();
+                                                var time = DateTime.Now.Subtract(message.SendDate.Value).Minutes;
+                                                if (time < 60)
+                                                {
+                                                    sentDateTime = time.ToString() + " minute(s)";
+                                                }
+                                                else if (time < 24)
+                                                {
+                                                    time = DateTime.Now.Subtract(message.SendDate.Value).Hours;
+                                                    sentDateTime = time.ToString() + " hour(s)";
+                                                }
+                                                var star = message.Priority == ContactMessagePriority.IMPORTANT ? "fas fa-star text-warning" : "fas fa-star text-secondary";
+                                                star = message.Read && message.Priority == ContactMessagePriority.IMPORTANT ? "fas fa-star text-warning" : "fas fa-star text-secondary";
+                                                var fileAttachment = string.Empty;
+                                                if(string.IsNullOrEmpty(message.AttachmentName))
+                                                {
+                                                    fileAttachment = "none";
+                                                }
+                                                var messageLength = @HttpUtility.HtmlDecode(@message.Message).Length > 30 ? 30 : @HttpUtility.HtmlDecode(@message.Message).Length;
+                                                var messageSummary = @HttpUtility.HtmlDecode(@message.Message).Substring(0, messageLength) + "....";
+                                                <tr class="@(message.Read == false ? "message-unread" : "message-read")">
+                                                    <td>
+                                                        <input id="@message.InboxMessageId" class="vendors" name="messages" type="checkbox" value="@message.InboxMessageId" checked="@message.SelectedForAction" />
+                                                    </td>
+                                                    <td class="mailbox-star">
+                                                        <a class="row-links" asp-action="InboxDetails" asp-route-id="@message.InboxMessageId"><i class="@star"></i></a>
+                                                    </td>
+                                                    <td><a class="row-links" asp-action="InboxDetails" asp-route-id="@message.InboxMessageId">@message.SenderEmail</a></td>
+                                                    <td class="message-title text-muted">
+                                                        <a class="row-links" asp-action="InboxDetails" asp-route-id="@message.InboxMessageId"><span>@message.Subject</span> - @messageSummary</a>
+                                                    </td>
+
+                                                    <td class="mailbox-attachment">
+                                                        <a class="row-links" asp-action="InboxDetails" asp-route-id="@message.InboxMessageId">
+                                                            <span style="display:@fileAttachment"> <i class='fas fa-paperclip'></i></span>
+                                                        </a>
+                                                    </td>
+
+                                                    <td class="mailbox-date">
+                                                        <a class="row-links" asp-action="InboxDetails" asp-route-id="@message.InboxMessageId">
+                                                        @sentDateTime
+                                                        </a>
+                                                        </td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr><td colspan="6" class="empty-table-message">Empty Inbox</td></tr>
+                                        }
+
+                                    </tbody>
+                                    
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card-footer p-0">
+                            <div class="mailbox-controls">
+
+                                @*<button disabled="disabled" id="manage-vendors" type="submit" class="btn btn-default btn-sm">
+                                    <i class="far fa-square"></i>
+                                </button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <i class="fas fa-reply"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <i class="fas fa-share"></i>
+                                    </button>
+                                </div>
+
+                                <button type="button" class="btn btn-default btn-sm">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>*@
+                                @*<div class="float-right">
+                                    1-@Model.Count()/@Model.Count()
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+
+                                </div>*@
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

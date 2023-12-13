@@ -1,0 +1,653 @@
+﻿@model ClaimTransactionModel
+
+@{
+    ViewData["Title"] = "Claim: Approved Report ";
+}
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="article" class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-newspaper"></i> Report</h3>
+                    </div>
+                    @{
+                        var address = @Model.Claim?.CustomerDetail.Addressline + " " + @Model.Claim?.CustomerDetail.District.Name + " " + @Model.Claim?.CustomerDetail.State.Name + " " + @Model.Claim?.CustomerDetail.Country.Name + " " + @Model.Claim?.CustomerDetail.PinCode.Code;
+                        var baddress = @Model.Location != null ? @Model.Location?.Addressline + " " +
+                        @Model.Location?.District?.Name + " " + @Model.Location?.State?.Name + " " +
+                        @Model.Location?.Country?.Name + " " + @Model.Location?.PinCode?.Code : string.Empty;
+                        var age = DateTime.Now.Subtract(Model.Claim.CustomerDetail.CustomerDateOfBirth).TotalDays;
+                        var currentAgeinYrs = (int)age / 365;
+                        int beneficaryAge = 0;
+
+                        if (Model.Location.BeneficiaryDateOfBirth != null)
+                        {
+                            var bage = DateTime.Now.Subtract(Model.Location.BeneficiaryDateOfBirth).TotalDays;
+                            beneficaryAge = (int)bage / 365;
+                        }
+                        string timeTaken = "< 1";
+                        var totalTime = @Model.Log.FirstOrDefault().Created.Subtract(Model.Log.LastOrDefault().Created).Days;
+                        if(totalTime > 0)
+                        {
+                            timeTaken = totalTime.ToString();
+                        }
+                        var customerLocationMap = @ViewBag.CustomerLocationUrl;
+                        var beneficiaryLocationMap = @ViewBag.BeneficiaryLocationUrl;
+                        <div class="card-body">
+                            <article>
+                                <input type="hidden" id="policyDetailId" value="@Model.Claim?.PolicyDetail.PolicyDetailId" />
+                                <input type="hidden" id="beneficiaryId" value="@Model.Location?.CaseLocationId" />
+                                <input type="hidden" id="customerDetailId" value="@Model.Claim?.CustomerDetail?.CustomerDetailId" />
+                                <input type="hidden" id="claimId" name="claimId" value="@Model.Claim.ClaimsInvestigationId" />
+                                <input type="hidden" id="CaseLocationId" name="CaseLocationId" value="@Model.Location.CaseLocationId" />
+
+                                <div class="bb-blog-inner">
+                                    <header class="bb-blog-header">
+                                        <h5 class="bb-blog-title" itemprop="name">
+                                            <i class="far fa-file-powerpoint"></i>
+                                            <a asp-controller="Report" asp-action="PrintPdfReport" asp-route-id="@Model.Claim.ClaimsInvestigationId">
+                                                Policy # : @Model.Claim.PolicyDetail.ContractNumber
+                                            </a>
+                                        </h5>
+                                    </header>
+                                    <div class="card card-solid">
+                                        <div class="card-body pb-0">
+                                            <div class="row">
+                                                <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                                                    <div class="card bg-light d-flex flex-fill">
+                                                        <div class="card-header text-muted border-bottom-0">
+                                                            <i class="far fa-file-powerpoint"></i> Policy Details
+                                                        </div>
+                                                        <div class="card-body pt-0">
+                                                            <div class="row">
+                                                                <div class="col-7">
+                                                                    <h2 class="lead"><b>@Model.Claim?.PolicyDetail.LineOfBusiness.Name</b></h2>
+                                                                    <p class="text-muted text-sm">
+                                                                        <b>Claim Type: </b>@Model.Claim?.PolicyDetail.ClaimType
+                                                                    </p>
+                                                                    <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-money-bill-wave"></i>
+                                                                            </span>
+                                                                            Amount: <i class="fas fa-rupee-sign"></i>@Model.Claim?.PolicyDetail.SumAssuredValue
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-tools"></i>
+                                                                            </span>
+                                                                            Service: @Model.Claim?.PolicyDetail.InvestigationServiceType.Name
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-money-check-alt"></i>
+                                                                            </span>
+                                                                            Budget center: @Model.Claim?.PolicyDetail.CostCentre.Name
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-sun"></i>
+                                                                            </span>
+                                                                            Reason: @Model.Claim?.PolicyDetail.CaseEnabler.Name;
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="far fa-clock"></i>
+                                                                            </span>
+                                                                            Issue Date: @Model.Claim?.PolicyDetail.ContractIssueDate.ToString("dd-MMM-yyyy")
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-5 text-center">
+                                                                    <p class="text-muted text-sm">
+
+                                                                    </p>
+                                                                    <p class="text-muted text-sm">
+                                                                        @if (Model?.Claim?.PolicyDetail.DocumentImage is not null)
+                                                                        {
+                                                                            <img id="documentImage" class="img-fluid" src="data:image/*;base64,@(Convert.ToBase64String(Model?.Claim?.PolicyDetail.DocumentImage))">
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <img id="documentImage" alt="user-avatar"
+                                                                                 class="img-circle img-fluid form-Image" src="/img/no-policy.jpg">
+                                                                        }
+                                                                    </p>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <div class="text-right">
+                                                                <a id="policy-comments" class="btn btn-sm bg-teal">
+                                                                    <i class="fas fa-comments"></i>
+                                                                </a>
+                                                                <a id="policy-detail" class="btn btn-sm btn-danger">
+                                                                    <i class="far fa-file-powerpoint"></i> ...
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                                                    <div class="card bg-light d-flex flex-fill">
+                                                        <div class="card-header text-muted border-bottom-0">
+                                                            <i class="fa fa-user-plus"></i> Customer Details
+                                                        </div>
+                                                        <div class="card-body pt-0">
+                                                            <div class="row">
+                                                                <div class="col-7">
+                                                                    <h2 class="lead"><b>@Model.Claim.CustomerDetail.CustomerName</b></h2>
+                                                                    <p class="text-muted text-sm">
+                                                                        <b>Occupation: </b> @Model.Claim.CustomerDetail.CustomerOccupation
+                                                                    </p>
+                                                                    <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-rupee-sign"></i>
+                                                                            </span>
+                                                                            Income: @Model.Claim.CustomerDetail.CustomerIncome
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-rupee-sign"></i>
+                                                                            </span>
+                                                                            Age: @currentAgeinYrs
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-lg fa-building"></i>
+                                                                            </span>
+                                                                            Address: @address
+                                                                        </li>
+
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-lg fa-phone"></i>
+                                                                            </span>
+                                                                            Phone #: + @Model.Claim.CustomerDetail.ContactNumber
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-5 text-center">
+                                                                    <p class="text-muted text-sm">
+                                                                        @if (Model?.Claim?.CustomerDetail?.ProfilePicture is not null)
+                                                                        {
+                                                                            <img id="profileImage" class="img-fluid block-data" src="data:image/*;base64,@(Convert.ToBase64String(Model?.Claim?.CustomerDetail?.ProfilePicture))">
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <img id="profileImage" class="img-fluid block-data" src="/img/user.png">
+                                                                        }
+                                                                    </p>
+                                                                    <p class="text-muted text-sm">
+                                                                        <img id="profileImageMap" class="img-fluid block-data" src="@customerLocationMap">
+                                                                    </p>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <div class="text-right">
+                                                                <a id="customer-comments" class="btn btn-sm bg-teal">
+                                                                    <i class="fas fa-comments"></i>
+                                                                </a>
+                                                                <a id="customer-detail" class="btn btn-sm btn-warning">
+                                                                    <i class="fa fa-user-plus"></i> ...
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                                                    <div class="card bg-light d-flex flex-fill">
+                                                        <div class="card-header text-muted border-bottom-0">
+                                                            <i class="fas fa-user-tie"></i>  Beneficiary Details
+                                                        </div>
+                                                        <div class="card-body pt-0">
+                                                            <div class="row">
+                                                                <div class="col-7">
+                                                                    <h2 class="lead"><b>@Model.Location?.BeneficiaryName</b></h2>
+                                                                    <p class="text-muted text-sm">
+                                                                        <b>Relation: </b> @Model.Location?.BeneficiaryRelation.Name
+                                                                    </p>
+                                                                    <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-user-clock"></i>
+                                                                            </span>
+                                                                            Age: @beneficaryAge
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-rupee-sign"></i>
+                                                                            </span>
+                                                                            Income: @Model.Location?.BeneficiaryIncome
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-lg fa-building"></i>
+                                                                            </span>
+                                                                            Address: @baddress
+                                                                        </li>
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="fas fa-lg fa-phone"></i>
+                                                                            </span>
+                                                                            Phone #: + @Model.Location?.BeneficiaryContactNumber
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-5 text-center">
+                                                                    <p class="text-muted text-sm">
+                                                                        @if (Model?.Location?.ProfilePicture is not null)
+                                                                        {
+                                                                            <img id="bImage" class="img-fluid block-data" src="data:image/*;base64,@(Convert.ToBase64String(Model?.Location?.ProfilePicture))">
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <img id="bImage" class="img-fluid block-data" src="/img/user.png">
+                                                                        }
+                                                                    </p>
+                                                                    <p class="text-muted text-sm">
+                                                                        <img id="bImageMap" class="img-fluid block-data" src="@beneficiaryLocationMap">
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <div class="text-right">
+                                                                <a id="beneficiary-comments" class="btn btn-sm bg-teal">
+                                                                    <i class="fas fa-comments"></i>
+                                                                </a>
+                                                                <a id="beneficiary-detail" class="btn btn-sm btn-success">
+                                                                    <i class="fas fa-user-tie"></i> ...
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <header class="bb-blog-header">
+                                            <h5 class="bb-blog-title" itemprop="name"><i class="fas fa-print nav-icon"></i> Agency Report: <span class="badge badge-light">@Model.Location.Vendor.Email</span> </h5>
+                                            </header>
+                                            <div class="row">
+                                                @{
+                                                    string agentRemarksUpdated = null;
+                                                    if (@Model.Location.ClaimReport?.AgentRemarksUpdated != null)
+                                                    {
+                                                        agentRemarksUpdated = Model.Location.ClaimReport?.AgentRemarksUpdated.Value.ToString("dd-MMM-yy hh:mm tt");
+                                                    }
+                                                    var QR1 = @Model.Location?.ClaimReport?.AgentOcrData ?? "OCR Scan Info";
+                                                    var image = @ViewBag.LocationUrl;
+                                                    var ocrImage = @ViewBag.OcrLocationUrl;
+                                                    var locationData = @Model.Location?.ClaimReport?.LocationData ?? "Image DATA";
+                                                }
+                                                @{
+                                                    if (@Model.Location.ClaimReport?.LocationData != null && @Model.Location.ClaimReport?.LocationLongLatTime != null && image != null)
+                                                    {
+                                                        <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                                                            <div class="card bg-light d-flex flex-fill">
+                                                                <div class="card-header text-muted border-bottom-0">
+
+                                                                    <i class="fas fa-portrait"></i> Digital <span class="badge badge-light">checkify</span> <span class="badge badge-light" style="float:right;"><i class="nav-icon fas fa-clock"></i> @Model.Location.ClaimReport?.LocationLongLatTime.Value.ToString("dd-MMM-yy hh:mm tt")</span>
+                                                                </div>
+                                                                <div class="card-footer text-center">
+                                                                    <span class="badge badge-light"><i class="fas fa-portrait"></i> Match :  </span>
+                                                                    @if (string.IsNullOrWhiteSpace(@Model.Location.ClaimReport.LocationPictureConfidence))
+                                                                    {
+                                                                        <i style='color:orangered;' class='fa fa-times' aria-hidden='true'></i>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i style='color:green;' class='fas fa-check-circle'></i>
+                                                                    }
+                                                                </div>
+                                                                <div class="card-body pt-0">
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <p class="text-muted text-sm">
+                                                                                <span class="badge badge-light"><i class="far fa-image"></i> Digital Image</span>:
+                                                                                <br />
+                                                                                @{
+                                                                                    if (Model.Location.ClaimReport?.AgentLocationPicture != null)
+                                                                                    {
+                                                                                        <img title="digital image" id="agentLocationPicture" class="img-fluid face-Image" src="data:image/*;base64,@(Convert.ToBase64String(@Model.Location.ClaimReport?.AgentLocationPicture))">
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <img title="digital image" id="agentLocationPicture" alt="face image" class="img-fluid  ocr-data" src="/img/no-photo.png">
+                                                                                    }
+                                                                                }
+                                                                            </p>
+                                                                            <p class="text-muted text-sm">
+
+                                                                                <span class="badge badge-light"><i class="fas fa-info"></i> Location Info</span>
+                                                                                <br />
+                                                                                <label class="ocr-data img-fluid"> @locationData</label>
+
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <p class="text-muted text-sm">
+                                                                                <span class="badge badge-light"><i class="fas fa-map-pin"></i> Location visited</span>
+                                                                                <br />
+                                                                                <img class="img-fluid locationImage" src=@image />
+                                                                            </p>
+                                                                            <p class="text-muted text-sm">
+
+                                                                                <span class="badge badge-light"><i class="fas fa-map-marker-alt"></i> Address visited</span>
+                                                                                <br />
+                                                                                <label class="img-fluid ocr-data"> @ViewBag.LocationAddress</label>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card-footer">
+                                                                    <span class="badge badge-light"><i class="fas fa-film"></i> Map Location</span>:<span class="badge badge-light">Expected and visited</span>
+                                                                    <div id="face-map">
+                                                                    </div>
+                                                                    <div id="face-msg">
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    if (@Model.Location.ClaimReport?.AgentOcrData != null && @Model.Location.ClaimReport?.OcrLongLatTime != null && ocrImage != null)
+                                                    {
+                                                        <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                                                            <div class="card bg-light d-flex flex-fill">
+                                                                <div class="card-header text-muted border-bottom-0">
+
+                                                                    <i class="fas fa-mobile-alt"></i> Document <span class="badge badge-light">checkify</span><span class="badge badge-light" style="float:right;"><i class="nav-icon fas fa-clock"></i> @Model.Location.ClaimReport?.OcrLongLatTime.Value.ToString("dd-MMM-yy hh:mm tt")</span>
+                                                                </div>
+                                                                <div class="card-footer text-center">
+                                                                    <span class="badge badge-light"><i class="far fa-image"></i> Valid : </span>
+                                                                    @if (@Model.Location.ClaimReport.PanValid.HasValue && @Model.Location.ClaimReport.PanValid.Value)
+                                                                    {
+                                                                        <i style='color:green;' class='fas fa-check-circle'></i>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i style='color:orangered;' class='fa fa-times' aria-hidden='true'></i>
+                                                                    }
+                                                                </div>
+                                                                <div class="card-body pt-0">
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <p class="text-muted text-sm">
+                                                                                <span class="badge badge-light"><i class="fas fa-film"></i> Document Image</span>:
+                                                                                <br />
+                                                                                @{
+                                                                                    if (Model.Location.ClaimReport?.AgentOcrPicture != null)
+                                                                                    {
+                                                                                        <img title="document image" id="agentOcrPicture" class="img-fluid ocr-Image" src="data:image/*;base64,@(Convert.ToBase64String(@Model.Location.ClaimReport?.AgentOcrPicture))">
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <img title="document image" id="agentOcrPicture" alt="ocr-image" class="img-fluid ocr-data" src="/img/no-photo.png">
+                                                                                    }
+                                                                                }
+                                                                            </p>
+                                                                            <p class="text-muted text-sm">
+
+                                                                                <span class="badge badge-light"><i class="fas fa-info"></i> Image Scan Info</span>
+                                                                                <br />
+                                                                                <label class="img-fluid ocr-data"> @QR1</label>
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="col-6">
+
+                                                                            <p class="text-muted text-sm">
+                                                                                <span class="badge badge-light"><i class="fas fa-map-pin"></i> Location visited</span>
+                                                                                <br />
+                                                                                <img class="img-fluid olocationImage" src=@ocrImage />
+                                                                            </p>
+                                                                            <p class="text-muted text-sm">
+
+                                                                                <span class="badge badge-light"><i class="fas fa-map-marker-alt"></i> Address visited</span>
+                                                                                <br />
+                                                                                <label class="img-fluid ocr-data"> @ViewBag.OcrLocationAddress</label>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card-footer">
+                                                                    <span class="badge badge-light"><i class="fas fa-film"></i> Map Location</span>:<span class="badge badge-light">Expected and visited</span>
+                                                                    <div id="ocr-map">
+                                                                    </div>
+                                                                    <div id="ocr-msg">
+                                                                    </div>
+                                                                </div>
+                                                               
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                @if (!string.IsNullOrWhiteSpace(Model.Location.ClaimReport?.AgentRemarks))
+                                                {
+                                                    var questionTime = @Model.Location.ClaimReport.AgentRemarksUpdated != null ? @Model.Location.ClaimReport.AgentRemarksUpdated.Value.ToString("dd-MMM-yy hh:mm tt") : null;
+
+                                                    <div class="col-12 col-sm-4 d-flex align-items-stretch flex-column">
+                                                        <div class="card bg-light d-flex flex-fill">
+                                                            <div class="card-header text-muted border-bottom-0">
+                                                                <i class="far fa-comment"></i> Questionnaire <span class="badge badge-light">checkify</span> <span class="badge badge-light" style="float:right;"><i class="nav-icon fas fa-clock"></i>@questionTime </span>
+                                                            </div>
+                                                            <div class="card-footer text-muted border-bottom-0">
+                                                               <i class="fas fa-user-shield"></i>  Agent:<span class="badge badge-light">  @Model.Location.ClaimReport.AgentEmail </span>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <p class="text-muted text-sm">
+                                                                            <span class="badge badge-light"><i class="fas fa-film"></i> Questions</span>:
+                                                                            <br />
+                                                                            <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                                                <li class="small">
+                                                                                    Ownership of residence ?
+                                                                                    <span class="fa-li">
+                                                                                        <i class="far fa-comment"></i>
+                                                                                    </span>
+                                                                                </li>
+                                                                                <br />
+                                                                                <li class="small">
+                                                                                    Perceived financial status ?
+                                                                                    <span class="fa-li">
+                                                                                        <i class="far fa-comment"></i>
+                                                                                    </span>
+                                                                                </li>
+                                                                                <br />
+                                                                                <li class="small">
+                                                                                    Name of neighbour met ?
+                                                                                    <span class="fa-li">
+                                                                                        <i class="far fa-comment"></i>
+                                                                                    </span>
+                                                                                </li>
+                                                                                <br />
+                                                                                <li class="small">
+                                                                                    Date when met with neighbour ?
+                                                                                    <span class="fa-li">
+                                                                                        <i class="far fa-comment"></i>
+                                                                                    </span>
+                                                                                </li>
+                                                                                <br />
+                                                                                <li class="small">
+                                                                                    Remarks?
+                                                                                    <span class="fa-li">
+                                                                                        <i class="far fa-comment"></i>
+                                                                                    </span>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </p>
+                                                                    </div>
+                                                                   
+                                                                    <div class="col-6">
+                                                                        <p class="text-muted text-sm">
+                                                                            <span class="badge badge-light"><i class="fas fa-film"></i> Answers</span>:
+                                                                            <br />
+                                                                            <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                                                <li class="small">
+                                                                                    <span class="fa-li">
+                                                                                        <i class="far fa-comment"></i>
+                                                                                    </span>
+                                                                                    @Model.Location.ClaimReport?.Question1
+                                                                                </li>
+                                                                                <br />
+                                                                                <li class="small">
+
+                                                                                    <span class="fa-li">
+                                                                                        <i class="far fa-comment"></i>
+                                                                                    </span>
+                                                                                    @Model.Location.ClaimReport?.Question2
+                                                                                </li>
+                                                                                <br />
+                                                                                <li class="small">
+                                                                                    <span class="fa-li">
+                                                                                        <i class="far fa-comment"></i>
+                                                                                    </span>
+                                                                                    @Model.Location.ClaimReport?.Question3
+                                                                                </li>
+                                                                                <br />
+                                                                                <li class="small">
+                                                                                    <span class="fa-li">
+                                                                                        <i class="far fa-comment"></i>
+                                                                                    </span>
+                                                                                    @Model.Location.ClaimReport?.Question4
+                                                                                </li>
+                                                                                <br />
+                                                                                <li class="small">
+                                                                                    <span class="fa-li">
+                                                                                        <i class="far fa-comment"></i>
+                                                                                    </span>
+                                                                                    @Model.Location.ClaimReport?.AgentRemarks
+                                                                                </li>
+                                                                            </ul>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                @if (!string.IsNullOrWhiteSpace(Model.Location.ClaimReport?.SupervisorRemarks))
+                                                {
+                                                    <div class="col-12 d-flex align-items-stretch flex-column">
+                                                        <div class="card bg-light d-flex flex-fill">
+                                                            <div class="card-header text-muted border-bottom-0">
+                                                                <i class="fas fa-user-edit"></i> Supervisor <span style="float:right;"><i class="nav-icon fas fa-clock"></i> @Model.Location.ClaimReport?.SupervisorRemarksUpdated.Value.ToString("dd-MMM-yy hh:mm tt")</span>
+                                                            </div>
+                                                            <div class="card-body pt-0">
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <h4 class="lead"><span class="badge badge-light"> @Model?.Location.ClaimReport?.SupervisorEmail</span></h4>
+                                                                        <p class="text-muted text-sm">
+
+                                                                            <span>Supervisor comments: </span>
+                                                                        </p>
+                                                                        <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                                            <li class="small">
+                                                                                <span class="fa-li">
+                                                                                    <i class="far fa-comment"></i>
+                                                                                </span>
+                                                                                @Model.Location.ClaimReport?.SupervisorRemarks <i class="far fa-comment"></i>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 d-flex align-items-stretch flex-column">
+                                                    <div class="card bg-light d-flex flex-fill">
+                                                        <div class="card-header text-muted border-bottom-0">
+                                                            <i class="fas fa-user-check"></i> Assessor <span style="float:right;"><i class="nav-icon fas fa-clock"></i> @Model.Location.ClaimReport?.AssessorRemarksUpdated.Value.ToString("dd-MMM-yy hh:mm tt")</span>
+                                                        </div>
+                                                        <div class="card-body pt-0">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <h4 class="lead"><span class="badge badge-light"> @Model?.Location?.ClaimReport.AssessorEmail</span></h4>
+                                                                    <p class="text-muted text-sm">
+
+                                                                        <span>Assessor remarks: </span>
+                                                                    </p>
+                                                                    <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                                        <li class="small">
+                                                                            <span class="fa-li">
+                                                                                <i class="far fa-comment"></i>
+                                                                            </span>
+                                                                            @Model.Location.ClaimReport.AssessorRemarks <i class="far fa-comment"></i>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-solid">
+                                        <div class="card-body pb-0">
+                                            <span class="badge badge-light"> Total Time taken (days)</span>: <span class="badge badge-info"> @timeTaken</span>
+                                            <div class="row">
+                                                <div class="col-12 d-flex align-items-stretch flex-column">
+                                                    <div class="bb-blog-content" itemprop="articleBody">
+                                                        <div class="timeline">
+                                                            @{
+                                                                foreach (var log in Model.Log)
+                                                                {
+                                                                    <div class="time-label"><span class="bg-red">@log.Created.ToString("dd-MMM-yyyy")</span></div>
+
+                                                                    <div>
+                                                                        <i class="nav-icon fas fa-envelope bg-blue"></i>
+                                                                        <div class="timeline-item">
+                                                                            <span class="time"><i class="nav-icon fas fa-clock"></i> @log.Created.ToString("hh:mm tt")</span>
+                                                                            <h3 class="timeline-header"><a href="#">@log.UpdatedBy</a> has actioned the case to: <span class="badge badge-success"> @log.InvestigationCaseStatus.Name : @log.InvestigationCaseSubStatus.Name.</span></h3>
+                                                                            <div class="timeline-body">
+                                                                                The case is moved to <span class="badge badge-info">@log.CurrentClaimOwner</span>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
+
+                                                            <div><i class="nav-icon fas fa-clock bg-gray"></i></div>
+                                                        </div>
+                                                    </div> <!-- class bb-blog-content -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div> <!-- class bb-blog-inner -->
+                            </article>
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <a asp-action="Approved" asp-action="Index" class="btn btn-default"><i class="fas fa-arrow-left"></i> @Applicationsettings.BACK</a> &nbsp;&nbsp;&nbsp;
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts    {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDH8T9FvJ8n2LNwxkppRAeOq3Mx7I3qi1E&callback=initReportMap">
+    </script>
+<script src="~/js/map.js"></script>
+}

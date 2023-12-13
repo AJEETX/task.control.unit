@@ -1,0 +1,257 @@
+﻿@model risk.control.system.Models.ClaimsInvestigation
+
+@{
+    ViewData["Title"] = @Applicationsettings.CREATE;
+    var hasClientCompany = @Model.HasClientCompany ? "none" : "";
+    Layout = "/Views/Shared/AdminLTE/_FormLayout.cshtml";
+}
+<style>
+    .form-group input::placeholder{
+        opacity:.5;
+    }
+    .form-group input:focus, .form-group input:not(:placeholder-shown){
+        & + .custom_label{
+            left:-8rem;
+            transform:translate(10rem);
+        }   
+    }
+</style>
+<section class="content pt-2">
+    <div class="container-fluid ">
+        <div class="row">
+            <div class="col-md-12">
+                <form id="create-form" asp-action="CreatePolicy" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div id="article" class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-pen-alt"></i> Add New</h3>
+                        </div>
+                        <input type="hidden" asp-for="PolicyDetail.LineOfBusinessId" value="@Model.PolicyDetail.LineOfBusinessId" />
+                        <div class="card-body">
+                            <article>
+                                <div class="bb-blog-inner">
+                                    <header class="bb-blog-header">
+                                        <h5 class="bb-blog-title" itemprop="name"> <i class="far fa-file-powerpoint"></i> Add Policy </h5>
+                                    </header>
+
+                                    <div class="card card-solid">
+                                        <div class="progress">
+                                            <i class="far fa-caret-square-right" style="font-size:1.1rem;"></i>
+                                            <div class="progress-bar" role="progressbar" style="width:33%;background-color:green;">
+                                                add policy
+                                            </div>
+                                            <i class="far fa-caret-square-right" style="font-size:1.1rem;"></i>
+                                            <div class="progress-bar" role="progressbar" style="width:33%;background-color:lightgrey">
+                                                customer
+                                            </div>
+                                            <i class="far fa-caret-square-right" style="font-size:1.1rem;"></i>
+
+                                            <div class="progress-bar" role="progressbar" style="width:34%;background-color:lightgray">
+                                                beneficiary
+                                            </div>
+                                        </div>
+                                        <div class="card-body pb-0">
+
+                                            <div class="col-12 d-flex align-items-stretch flex-column">
+                                                <div class="card bg-light d-flex flex-fill">
+                                                    <div class="card-header text-muted border-bottom-0" style="text-decoration:underline;">
+                                                        <i class="far fa-file-powerpoint"></i> Policy Details <i class="far fa-file-powerpoint"></i>
+                                                    </div>
+                                                    <div class="card-body pt-0">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div style="display:@hasClientCompany;" class="form-group">
+                                                                    <span asp-for="ClientCompanyId" class="control-label"></span>
+                                                                    <select id="ClientCompanyId" asp-for="PolicyDetail.ClientCompanyId" class="form-control" asp-items="ViewBag.ClientCompanyId">
+                                                                        <option>--- SELECT COMPANY ---</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <span class="input-group-label"> Policy #:</span>
+                                                                    <div class="input-group mb-3">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" asp-for="ContractNumber"><i class="far fa-file-powerpoint"></i>  <i class="fa fa-asterisk asterik-style"></i></span>
+                                                                        </div>
+                                                                        <input id="ContractNumber" required asp-for="PolicyDetail.ContractNumber" style="text-transform:uppercase" class="form-control" type="text" placeholder="Policy #" maxlength="20" value="POLX1001" />
+                                                                        <span asp-validation-for="PolicyDetail.ContractNumber" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <span class="input-group-label"> Insured Amount:</span>
+                                                                    <div class="input-group mb-3">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" asp-for="SumAssuredValue"><i class="fas fa-rupee-sign"></i>  <i class="fa fa-asterisk asterik-style"></i></span>
+                                                                        </div>
+                                                                        <input required asp-for="PolicyDetail.SumAssuredValue" class="form-control" type="text" placeholder="Insured Amount" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="900001" min="1" maxlength="10" />
+                                                                        <span asp-validation-for="PolicyDetail.SumAssuredValue" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <span class="input-group-label"> Issue Date:</span>
+                                                                    <div class="input-group mb-3">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" asp-for="ContractIssueDate"><i class="nav-icon far fa-calendar-check"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                                                        </div>
+                                                                        @{
+                                                                            var maxDate = @DateTime.Now.ToString("dd-MM-yyyy");
+                                                                        }
+                                                                        <input required asp-for="PolicyDetail.ContractIssueDate" id="dateContractId" class="form-control date-width" min="2000-01-01" max="@maxDate" type="date" />
+                                                                        <span asp-validation-for="PolicyDetail.ContractIssueDate" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <span class="input-group-label"> Claim Type:</span>
+                                                                    <div class="input-group mb-3">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" asp-for="ClaimType"><i class="nav-icon fas fa-file-invoice"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                                                        </div>
+                                                                        <select required asp-for="PolicyDetail.ClaimType" class="form-control" asp-items="Html.GetEnumSelectList<ClaimType>()">
+                                                                            <option value="">--- SELECT ---</option>
+                                                                        </select>
+                                                                        <span asp-validation-for="PolicyDetail.ClaimType" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <span class="input-group-label"> Service Type:</span>
+                                                                    <div class="input-group mb-3">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" asp-for="InvestigationServiceTypeId"><i class="nav-icon fas fa-tools"></i> <i class="fa fa-asterisk asterik-style"></i> </span>
+                                                                        </div>
+                                                                        <select id="InvestigationServiceTypeId" required asp-for="PolicyDetail.InvestigationServiceTypeId" class="form-control" asp-items="ViewBag.InvestigationServiceTypeId">
+                                                                            <option value="">--- SELECT ---</option>
+                                                                        </select>
+                                                                        <span asp-validation-for="PolicyDetail.InvestigationServiceTypeId" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                
+                                                                <div class="form-group">
+                                                                    <span class="input-group-label"> Incident Date:</span>
+                                                                    <div class="input-group mb-3">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" asp-for="DateOfIncident"><i class="nav-icon far fa-calendar-alt"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                                                        </div>
+                                                                        <input required asp-for="PolicyDetail.DateOfIncident" id="dateIncidentId" class="form-control" type="date" />
+                                                                        <span asp-validation-for="PolicyDetail.DateOfIncident" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                
+
+
+                                                                <div class="form-group">
+                                                                    <span class="input-group-label"> Cause Of Incident:</span>
+                                                                    <div class="input-group mb-3">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" asp-for="CauseOfLoss"><i class="nav-icon far fa-flag"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                                                        </div>
+                                                                        <input required asp-for="PolicyDetail.CauseOfLoss" class="form-control" type="text" placeholder="Cause Of Incident" maxlength="20" />
+                                                                        <span asp-validation-for="PolicyDetail.CauseOfLoss" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div class="form-group">
+                                                                    <span class="input-group-label"> Reason To Verify:</span>
+                                                                    <div class="input-group mb-3">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" asp-for="CaseEnablerId"><i class="nav-icon fas fa-puzzle-piece"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                                                        </div>
+                                                                        <select required asp-for="PolicyDetail.CaseEnablerId" class="form-control" asp-items="ViewBag.CaseEnablerId">
+                                                                            <option value="">--- SELECT ---</option>
+                                                                        </select>
+                                                                        <span asp-validation-for="PolicyDetail.CaseEnablerId" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div class="form-group">
+                                                                    <span class="input-group-label"> Budget Centre:</span>
+                                                                    <div class="input-group mb-3">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" asp-for="CostCentreId"><i class="nav-icon fas fa-money-check-alt"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                                                        </div>
+                                                                        <select required asp-for="PolicyDetail.CostCentreId" class="form-control" asp-items="ViewBag.CostCentreId">
+                                                                            <option value="">--- SELECT ---</option>
+                                                                        </select>
+                                                                        <span asp-validation-for="PolicyDetail.CostCentreId" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <span class="input-group-label"> Policy Document:</span>
+                                                                    <div class="input-group mb-3">
+                                                                        
+                                                                        <img class="form-Image" id="policyImage" src="/img/no-document.png">
+                                                                        <input accept="image/*" asp-for="PolicyDetail.Document" type="file" class="form-control" id="documentImageInput" onchange="document.getElementById('policyImage').src = window.URL.createObjectURL(this.files[0])" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <div class="text-right">
+                                                            <a asp-action="CreateClaim" class="btn btn-secondary">
+                                                                <i class="fa fa-window-close"></i>
+                                                                @Applicationsettings.CANCEL
+                                                            </a>
+                                                            <button type="submit" class="btn btn-success">
+                                                                <i class="far fa-file-powerpoint"></i> Add Policy
+                                                            </button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $.validator.setDefaults({
+            submitHandler: function (form) {
+                $.confirm({
+                    title: "Confirm Add Policy",
+                    content: "Are you sure?",
+                    icon: 'far fa-file-powerpoint',
+                    columnClass: 'medium',
+                    type: 'green',
+                    closeIcon: true,
+                    buttons: {
+                        confirm: {
+                            text: "Add",
+                            btnClass: 'btn-success',
+                            action: function () {
+                                form.submit();
+                            }
+                        },
+                        cancel: {
+                            text: "Cancel",
+                            btnClass: 'btn-default'
+                        }
+                    }
+                });
+            }
+        });
+        $(document).ready(function () {
+            $("#create-form").validate();
+        });
+        $("#ContractNumber").focus();
+
+        dateContractId.max = new Date().toISOString().split("T")[0];
+        dateIncidentId.max = new Date().toISOString().split("T")[0];
+    </script>
+}

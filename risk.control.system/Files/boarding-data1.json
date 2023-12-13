@@ -1,0 +1,14 @@
+{
+  "Flight": "YES",
+  "DepartureAirport": "JOHN",
+  "DepartureAbvr": "MR DODO",
+  "BoardingGate": "793409834",
+  "BoardingTill": "2020-06-16T06:35:00",
+  "DepartureTime": "2020-06-16T07:05:00",
+  "Arrival": "2020-06-16T07:30:00",
+  "ArrivalAirport": "65 Husband Street",
+  "ArrivalAbvr": " VIC 3131",
+  "Class": "OK",
+  "ClassAdd": "(M)",
+  "Seat": "83P"
+}

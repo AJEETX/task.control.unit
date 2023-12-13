@@ -1,0 +1,33 @@
+﻿@model risk.control.system.Models.State
+
+@{
+    ViewData["Title"] = @Applicationsettings.DETAILS;
+}
+<h4> @Applicationsettings.STATE</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Details">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="StateId" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Code" class="control-label"></label>
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>            
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index" class="btn btn-secondary"><i class="fa fa-window-close"></i>  @Applicationsettings.CANCEL</a> &nbsp;
+    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.StateId"><i class="fas fa-pen"></i>  @Applicationsettings.EDIT</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

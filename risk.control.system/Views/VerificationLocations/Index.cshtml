@@ -1,0 +1,59 @@
+﻿@model IEnumerable<risk.control.system.Models.VerificationLocation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Addressline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PinCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.District)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Addressline)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PinCode.PinCodeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State.StateId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country.CountryId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.District.DistrictId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.VerificationLocationId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.VerificationLocationId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.VerificationLocationId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

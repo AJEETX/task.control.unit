@@ -1,0 +1,102 @@
+﻿@model risk.control.system.Models.PinCode
+
+@{
+    ViewData["Title"] = @Applicationsettings.CREATE;
+}
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-map-pin"></i>  @Applicationsettings.PINCODE</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="create-form" asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="CountryId" class="control-label"></label>
+                                <select asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId" onchange="loadState(this)">
+                                    <option>--- SELECT COUNTRY ---</option>
+                                </select>
+                                <span asp-validation-for="CountryId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="StateId" class="control-label"></label>
+                                <select id="StateId" asp-for="StateId" class="form-control" asp-items="ViewBag.StateId" onchange="loadDistrict(this)">
+                                    <option>--- SELECT STATE ---</option>
+                                </select>
+                                <span asp-validation-for="StateId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="DistrictId" class="control-label"></label>
+                                <select id="DistrictId" asp-for="DistrictId" class="form-control" asp-items="ViewBag.DistrictId">
+                                    <option>--- SELECT DISTRICT ---</option>
+                                </select>
+                                <span asp-validation-for="DistrictId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Code" class="control-label"></label>
+                                <input asp-for="Code" class="form-control" />
+                                <span asp-validation-for="Code" class="text-danger"></span>
+                            </div>
+                            <div class="form-group text-right">
+                                <a asp-action="Index" class="btn btn-secondary">
+                                    <i class="fa fa-window-close"></i>
+                                    @Applicationsettings.CANCEL
+                                </a>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-map-pin"></i> @Applicationsettings.CREATE
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+
+            var askConfirmation = true;
+            $('#create-form').submit(function (e) {
+                if (askConfirmation) {
+                    e.preventDefault();
+                    $.confirm({
+                        title: "Confirm Create",
+                        content: "Are you sure to create?",
+                        columnClass: 'medium',
+                        icon: 'fas fa-map-pin',
+                        type: 'green',
+                        closeIcon: true,
+                        buttons: {
+                            confirm: {
+                                text: "Create item",
+                                btnClass: 'btn-success',
+                                action: function () {
+                                    askConfirmation = false;
+                                    $('#create-form').submit();
+                                }
+                            },
+                            cancel: {
+                                text: "Cancel",
+                                btnClass: 'btn-default'
+                            }
+                        }
+                    });
+                }
+            })
+        });
+    </script>
+}

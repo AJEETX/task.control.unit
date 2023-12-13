@@ -1,0 +1,41 @@
+﻿@model List<ApplicationRole>
+<section class="content pt-2">
+    <div class="container-fluid">
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-user-cog"></i> Roles</h3>
+                    </div>
+                    <div class="card-body ">
+                        <table id="datatable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                            <thead>
+                                <tr>
+                                    @*<th>Id</th>*@
+                                    <th>Role</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var role in Model)
+                                {
+                                    <tr>
+                                        <td>@role.Name</td>
+                                        <td>
+                                            <a class="btn btn-xs btn-warning" asp-action="Edit" asp-route-id="@role.Id"><i class="fas fa-pen"></i> @Applicationsettings.EDIT</a> &nbsp;
+                                            <a class="btn btn-xs btn-danger" asp-action="Delete" asp-route-id="@role.Id"><i class="fas fa-trash"></i> @Applicationsettings.DELETE</a>
+                                            <a class="btn btn-xs btn-success" asp-controller="Permission" asp-action="Index" asp-route-id="@role.Id"><i class="fa-solid fa-house-lock"></i> @Applicationsettings.PERMISSION</a>
+                                            <input type="hidden" value="@role.Id" />
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

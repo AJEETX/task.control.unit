@@ -1,0 +1,32 @@
+[
+  {
+    "Flight": "Face ID",
+    "FlightCompany": "",
+    "FlightPlaner": "",
+    "Departure": "2020-06-16T07:05:00",
+    "DepartureAirport": "",
+    "Arrival": "Not available",
+    "ArrivalAirport": "",
+    "Class": "Forest hill",
+    "ClassAdd": "",
+    "Baggage": "23deg, wind speed 12km/hr",
+    "BaggageAdd": "",
+    "CheckIn": "Valid",
+    "CheckInAirport": ""
+  },
+  {
+    "Flight": "Document ID",
+    "FlightCompany": "",
+    "FlightPlaner": "",
+    "Departure": "2020-06-16T07:05:00",
+    "DepartureAirport": "",
+    "Arrival": "No match found",
+    "ArrivalAirport": "",
+    "Class": "Blackburn North",
+    "ClassAdd": "",
+    "Baggage": "23deg, wind speed 12km/hr",
+    "BaggageAdd": "",
+    "CheckIn": "Invalid",
+    "CheckInAirport": ""
+  }
+]

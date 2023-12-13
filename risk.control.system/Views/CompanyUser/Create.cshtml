@@ -1,0 +1,385 @@
+﻿@model risk.control.system.Models.ClientCompanyApplicationUser
+
+@{
+    ViewData["Title"] = Applicationsettings.CREATE;
+
+    var email = Model.ClientCompany.Email;
+    var emailAtIndex = email.IndexOf("@");
+    if (emailAtIndex > 0)
+    {
+        email = email.Substring(emailAtIndex + 1);
+    }
+    Layout = "/Views/Shared/AdminLTE/_FormLayout.cshtml";
+}
+
+<section class="content pt-2">
+    <div class="container-fluid ">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-user-plus"></i>  Add User</h3>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-3">
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <span class="input-group-label"> Email:</span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="emailid"><i class="fas fa-at"></i> <i class="fa fa-asterisk asterik-style"></i> </span>
+                                        </div>
+                                        <input type="text" asp-for="Email" id="emailAddress" class="form-control email-address" value="" onblur="CheckIfEmailValid();" required
+                                               placeholder="Enter User Email prefix" maxlength="20" onkeydown='return alphaOnly(event);' onClick="this.select();" autocomplete="off">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="Email">@@@email</span>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <button disabled id="check-email" class="input-group-text" onclick="checkUserEmail();">
+                                                <span class="badge badge-default">Check</span>
+                                            </button>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <span id="result"></span>
+                                        </div>
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <form id="create-form" asp-action="Create" enctype="multipart/form-data" autocomplete="off">
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="form-group hide-id">
+                                        <label asp-for="ClientCompanyId" class="control-label"></label>
+                                        <input type="hidden" asp-for="Email" id="mailAddress" />
+                                        <input type="hidden" id="emailSuffix" name="emailSuffix" value="@email" />
+                                        <input asp-for="ClientCompanyId" class="form-control" value="@Model.ClientCompany.ClientCompanyId" />
+
+                                        <span asp-validation-for="ClientCompanyId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Photo:</span>
+                                        <div class="input-group mb-3">
+
+                                            <img id="ProfileImage" class="form-Image" src="/img/user.png">
+
+                                            <input asp-for="ProfileImage" class="form-control" type="file" onchange="document.getElementById('ProfileImage').src = window.URL.createObjectURL(this.files[0])" />
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="input-group-label"> First Name:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="FirstName"><i class="fa fa-user"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+                                            <input type="text" asp-for="FirstName" class="form-control title-name" value="" required placeholder="First Name" maxlength="20" autocomplete=off>
+                                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Last Name:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="LastName"> <i class="fa fa-user"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+                                            <input type="text" asp-for="LastName" class="form-control title-name" value="" required placeholder="Last Name" maxlength="20" autocomplete="off">
+                                            <span asp-validation-for="LastName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="form-group">
+                                        <span class="input-group-label"> Password:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="Password"> <i class="fa fa-key"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+                                            <input type="password" asp-for="Password" class="form-control" value="" required placeholder="Password" maxlength="20" autocomplete="off">
+                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                        </div>
+                                    </div>*@
+
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Phone #:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="PhoneNumber"><i class="fas fa-phone"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+                                            <input type="text" asp-for="PhoneNumber" class="form-control" required maxlength="14" value="" placeholder="Phone # with country code"
+                                                   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Note:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="Comments"> <i class="fa fa-asterisk asterik-style" style="color:#e9ecef;"></i><i class="fas fa-comment"></i> </span>
+                                            </div>
+                                            <input type="text" asp-for="Comments" class="form-control" placeholder="Remarks (optional)" maxlength="20" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Country:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" for="CountryId"><i class="fas fa-map-marked-alt"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>    <select asp-for="CountryId" class="form-control" id="CountryId" asp-items="ViewBag.CountryId" onchange="loadState(this)" required>
+                                                <option value="">--- SELECT ---</option>
+                                            </select>
+                                            <span asp-validation-for="CountryId" class="text-danger"></span>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <span class="input-group-label"> State:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" for="StateId"><i class="fas fa-map-marker-alt"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+                                            <select id="StateId" asp-for="StateId" class="form-control" asp-items="ViewBag.StateId" onchange="loadDistrict(this)" required>
+                                                <option value="">--- SELECT ---</option>
+                                            </select>
+
+                                            <span asp-validation-for="StateId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <span class="input-group-label"> District:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" for="DistrictId"><i class="fas fa-city"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+
+                                            <select id="DistrictId" asp-for="DistrictId" class="form-control" asp-items="ViewBag.DistrictId" onchange="loadPinCode(this)" required>
+                                                <option value="">--- SELECT ---</option>
+                                            </select>
+
+                                            <span asp-validation-for="DistrictId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Pincode:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" for="PinCodeId"><i class="fas fa-map-pin"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+                                            <select id="PinCodeId" asp-for="PinCodeId" class="form-control" asp-items="ViewBag.PinCodeId" required>
+                                                <option value="">--- SELECT ---</option>
+                                            </select>
+                                            <span asp-validation-for="PinCodeId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Address:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="Addressline"><i class="fa fa-home"></i>  <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+                                            <input type="text" asp-for="Addressline" class="form-control" placeholder="Enter Address line" required maxlength="20" autocomplete="off" />
+                                            <span asp-validation-for="Addressline" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="input-group-label"> Status:</span>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-toggle-on"></i> <i class="fa fa-asterisk asterik-style"></i></span>
+                                            </div>
+                                            <div class="input-group-prepend">
+                                            </div>
+                                            <span class="checkbox">
+                                                <input asp-for="Active" type="checkbox" data-toggle="toggle" data-on="<i class='fa fa-play'></i> Active " data-off="<i class='fa fa-pause'></i> Inactive" data-onstyle="success" data-offstyle="danger">
+
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group text-right">
+                                        <a asp-controller="CompanyUser" asp-action="Index" asp-route-id="@Model.ClientCompany.ClientCompanyId" class="btn btn-secondary"><i class="fas fa-window-close"></i> Cancel</a>
+                                        <button disabled id="create-agency" type="submit" class="btn btn-success">
+                                            <i class="fas fa-user-plus"></i> Add User
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+
+        $.validator.setDefaults({
+            submitHandler: function (form) {
+                $.confirm({
+                    title: "Confirm User Creation",
+                    content: "Are you sure?",
+                    columnClass: 'medium',
+                    icon: 'fas fa-user-plus',
+                    type: 'green',
+                    closeIcon: true,
+                    buttons: {
+                        confirm: {
+                            text: "Create",
+                            btnClass: 'btn-success',
+                            action: function () {
+                                form.submit();
+                            }
+                        },
+                        cancel: {
+                            text: "Cancel",
+                            btnClass: 'btn-default'
+                        }
+                    }
+                });
+            }
+        });
+
+        $(document).ready(function () {
+
+            $("#create-form").validate();
+
+            $('input#emailAddress').on('input change', function () {
+                if ($(this).val() != '' && $(this).val().length > 4) {
+                    $('#check-email').prop('disabled', false);
+                    $("#check-email").css('color', 'white');
+                    $("#check-email").css('background-color', '#004788');
+                    $("#check-email").css('cursor', 'default');
+                } else {
+                    $('#create-agency').prop('disabled', 'true !important');
+                    $('#check-email').prop('disabled', true);
+                    $("#check-email").css('color', '#ccc');
+                    $("#check-email").css('background-color', 'grey');
+                    $("#check-email").css('cursor', 'not-allowed');
+                }
+            });
+
+            $('input#emailAddress').on('input focus', function () {
+                if ($(this).val() != '' && $(this).val().length > 4) {
+                    $('#check-email').prop('disabled', false);
+                    $("#check-email").css('color', 'white');
+                    $("#check-email").css('background-color', '#004788');
+                    $("#check-email").css('cursor', 'default');
+                } else {
+                    $('#create-agency').prop('disabled', 'true !important');
+                    $('#check-email').prop('disabled', true);
+                    $("#check-email").css('color', '#ccc');
+                    $("#check-email").css('background-color', 'grey');
+                    $("#check-email").css('cursor', 'not-allowed');
+                }
+            });
+
+            $("input#emailAddress").on({
+                keydown: function (e) {
+                    if (e.which === 32)
+                        return false;
+                },
+                change: function () {
+                    this.value = this.value.replace(/\s/g, "");
+                }
+            });
+        });
+
+
+        function alphaOnly(event) {
+            var key = event.keyCode;
+            return ((key >= 65 && key <= 90) || key == 8);
+        };
+
+
+        function checkUserEmail() {
+            var url = "/Account/CheckUserEmail";
+            var name = $('#emailAddress').val();
+            var emailSuffix = $('#emailSuffix').val();
+            if (name) {
+                $('#result').fadeOut(1000); // 1.5 seconds
+                $('#result').fadeOut('slow'); // 1.5 seconds
+                $.get(url, { input: name + '@@' + emailSuffix }, function (data) {
+
+                    if (data == 0) { //available
+                        $('#mailAddress').val($('#emailAddress').val());
+                        $("#result").html("<span style='color:green;padding-top:.5rem;'> <i class='fas fa-check' style='color:#298807'></i> </span>");
+                        $('#result').css('padding', '.5rem')
+
+                        $("#emailAddress").css('background-color', '');
+                        $("#emailAddress").css('border-color', '#ccc');
+                        $('#create-agency').prop('disabled', false);
+                        $('#result').fadeIn(1000); // 1.5 seconds
+                        $('#result').fadeIn('slow'); // 1.5 seconds
+                    }
+                    else if (data == 1) {//domain exists
+                        $("#result").html("<span style='color:red;padding-top:.5rem;display:inline !important'><i class='fa fa-times-circle' style='color:red;'></i> </span>");
+                        $('#result').css('padding', '.5rem')
+                        $('#result').css('display', 'inline')
+                        $("#emailAddress").css('border-color', '#e97878');
+                        $('#create-agency').prop('disabled', 'true !important');
+                        $('#result').fadeIn(1000); // 1.5 seconds
+                        $('#result').fadeIn('slow'); // 1.5 seconds
+                    }
+                    else if (data = null || data == undefined) {
+
+                    }
+
+                });
+            }
+
+        }
+
+        function CheckIfEmailValid() {
+            $('#result').fadeOut(1000); // 1.5 seconds
+            $('#result').fadeOut('slow'); // 1.5 seconds
+            var name = $('#emailAddress').val();
+            if (name && name.length > 4) {
+                $('#check-email').prop('disabled', false);
+                $("#check-email").css('color', 'white');
+                $("#check-email").css('background-color', '#004788');
+                $("#check-email").css('cursor', 'default');
+            }
+            else {
+                $('#check-email').css('disabled', true);
+                $("#check-email").css('color', '#ccc');
+                $("#check-email").css('background-color', 'grey');
+                $("#check-email").css('cursor', 'not-allowed');
+            }
+            $('#result').fadeIn(1000); // 1.5 seconds
+            $('#result').fadeIn('slow'); // 1.5 seconds
+        }
+
+    </script>
+}

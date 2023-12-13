@@ -1,0 +1,94 @@
+﻿@model risk.control.system.Models.SentMessage
+
+@{
+    ViewData["Title"] = "Details";
+}
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <a asp-controller="ContactMessage" asp-action="Sent" class="btn btn-default">
+                                <i class="fas fa-level-up-alt"></i> to Sent
+                            </a>
+                        </h3>
+                        <div class="card-tools">
+                            <a href="#" class="btn btn-tool" title="Previous"><i class="fas fa-chevron-left"></i></a>
+                            <a href="#" class="btn btn-tool" title="Next"><i class="fas fa-chevron-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="mailbox-read-info">
+                            <h5>Subject : @Model.Subject</h5>
+                            <h6>
+                                From: <a href="#">@Model.SenderEmail</a>
+                            </h6>
+                            <h6>
+                                To: <a href="#">@Model.ReceipientEmail</a>
+                                <span class="mailbox-read-time float-right">@Model.SendDate</span>
+                            </h6>
+                        </div>
+
+                        <div class="mailbox-controls with-border text-right">
+                            <div class="btn-group">
+                                <a asp-action="SentDetailsDelete" asp-route-id="@Model.SentMessageId" class="btn btn-default btn-sm" data-container="body" title="Delete">
+                                    <i class="far fa-trash-alt"></i>
+                                </a>
+                                <a asp-action="SentDetailsReply" asp-route-id="@Model.SentMessageId" asp-route-actiontype="Reply" class="btn btn-default btn-sm" data-container="body" title="Reply">
+                                    <i class="fas fa-reply"></i>
+                                </a>
+                                <a asp-action="SentDetailsReply" asp-route-id="@Model.SentMessageId" asp-route-actiontype="Forward" class="btn btn-default btn-sm" data-container="body" title="Forward">
+                                    <i class="fas fa-share"></i>
+                                </a>
+                            </div>
+
+                            <button type="button" onclick="window.print();return false;" class="btn btn-default btn-sm" title="Print">
+                                <i class="fas fa-print"></i>
+                            </button>
+                        </div>
+
+                        <div class="mailbox-read-message">
+                                @Html.Raw(Model.RawMessage)
+                        </div>
+
+                    </div>
+                    @{
+                        var fileIcon = (Model.Extension == ".jpg" || Model.Extension == ".png") ? "fa fa-image" : "far fa-file-pdf";
+                        var hasAttachment = (@Model.Attachment != null && @Model.Attachment.Length > 0) ? "" : "none";
+                    }
+                    <div class="card-footer bg-white">
+                        <ul class="mailbox-attachments d-flex align-items-stretch clearfix">
+                            <li style="display:@hasAttachment">
+                                <span class="mailbox-attachment-icon"><i class="@fileIcon"></i></span>
+                                <div class="mailbox-attachment-info">
+                                    <a asp-controller="Download" asp-action="SentDetailsDownloadFileAttachment" asp-route-id="@Model.SentMessageId" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> @Model.AttachmentName</a>
+                                    <span class="mailbox-attachment-size clearfix mt-1">
+                                        <span>@Model.Attachment?.Length  KB</span>
+                                        <a asp-controller="Download" asp-action="SentDetailsDownloadFileAttachment" asp-route-id="@Model.SentMessageId" class="btn btn-default btn-sm float-right"><i class="fas fa-cloud-download-alt"></i></a>
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="float-right">
+                            <a asp-action="SentDetailsReply" asp-route-id="@Model.SentMessageId" asp-route-actiontype="Reply" class="btn btn-default"><i class="fas fa-reply"></i> Reply</a>
+                            <a sp-action="SentDetailsReply" asp-route-id="@Model.SentMessageId" asp-route-actiontype="Forward" class="btn btn-default"><i class="fas fa-share"></i> Forward</a>
+                        </div>
+                        <a asp-action="SentDetailsDelete" asp-route-id="@Model.SentMessageId" class="btn btn-default"><i class="far fa-trash-alt"></i> Delete</a>
+                        <button type="button" onclick="window.print();return false;" class="btn btn-default"><i class="fas fa-print"></i> Print</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>

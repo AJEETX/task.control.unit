@@ -1,0 +1,108 @@
+﻿@{
+    ViewData["Title"] = @Applicationsettings.DETAILS;
+}
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-truck"></i> Manage Agency Service</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <a id="create-agency-service" class="btn btn-success" href='#'><i class="fas fa-truck"></i> @Applicationsettings.CREATE Service</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fas fa-list-ol"></i> Manage @Applicationsettings.SERVICE</h3>
+                    </div>
+                    <div class="card-body">
+                        <input type="hidden" id="vendorId" value="@ViewData["vendorId"]" />
+                        <table id="customerTable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>CaseType</th>
+                                    <th>ServiceType</th>
+                                    <th>Rate</th>
+                                    <th>District</th>
+                                    <th>State</th>
+                                    <th>Country</th>
+                                    <th>Pincodes</th>
+                                    <th>UpdatedBy</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group text-right">
+                    <a id="back-button" class="btn btn-default"><i class="fas fa-arrow-left"></i> @Applicationsettings.BACK</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts    {
+    <script>
+        $(document).ready(function () {
+            var vendor = $('#vendorId').val();
+            $('a#back-button').attr("href", "/Vendors/Details/" + vendor + "");
+            $('a#create-agency-service').attr("href", "/VendorService/Create?id=" + vendor + "");
+
+            $("#customerTable").DataTable({
+                ajax: {
+                    url: '/api/Company/AllServices?id=' + $('#vendorId').val(),
+                    dataSrc: ''
+                },
+                fixedHeader: true,
+                processing: true,
+                paging: true,
+                language: {
+                    loadingRecords: '&nbsp;',
+                    processing: '<i class="fas fa-sync fa-spin fa-4x fa-fw"></i><span class="sr-only">Loading...</span>'
+                },
+                columns: [
+                    /* Name of the keys from
+                    data file source */
+                    {
+                        "data": "id", "name": "Id", "bVisible": false
+                    },
+                    { "data": "caseType" },
+                    { "data": "serviceType" },
+                    { "data": "rate" },
+                    { "data": "district" },
+                    { "data": "state" },
+                    { "data": "country" },
+                    { "data": "pincodes" },
+                    { "data": "updatedBy" },
+                    {
+                        "sDefaultContent": "",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            var buttons = "";
+                            buttons += '<a href="/VendorService/Details?id=' + row.id + '" class="btn btn-xs btn-info"><i class="fa fa-search"></i> Details</a>&nbsp;'
+                            buttons += '<a href="/VendorService/Edit?id=' + row.id + '" class="btn btn-xs btn-warning"><i class="fas fa-pen"></i> Edit</a>&nbsp;'
+                            buttons += '<a href="/VendorService/Delete?id=' + row.id + '"  class="btn btn-xs btn-danger"><i class="fas fa-trash"></i> Delete</a>'
+                            return buttons;
+                        }
+                    }
+                ],
+                error: function (xhr, status, error) { alert('err ' + error) }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,124 @@
+﻿@using risk.control.system.Helpers;
+@inject ApplicationDbContext _context
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ApplicationUser appUser = (await UserManager.GetUserAsync(User));
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>icheckify</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <partial name="AdminLTE/_Styles" />
+    <partial name="AdminLTE/_DataTableStylePartial" />
+    <partial name="AdminLTE/_Scripts" />
+    <partial name="AdminLTE/_DataTableScriptPartial" />
+    <style>
+        .noty_theme__mint.noty_type__success{
+            background-color:green !important;
+            position:absolute;
+            top:0;
+        }
+
+        <style >
+        body {
+            margin: 0;
+            background-color: hsl(0, 0%, 98%);
+            color: #333;
+            font: 100% / normal Poppins;
+        }
+
+        main {
+            margin: 0 auto;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+    </style>
+</head>
+
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            var userEmail = User?.Identity?.Name;
+            var companyUser = _context.ClientCompanyApplicationUser.FirstOrDefault(c => c.Email == userEmail);
+            var vendorUser = _context.VendorApplicationUser.FirstOrDefault(c => c.Email == userEmail);
+
+            if(companyUser is not null)
+            {
+                <partial name="AdminLTE/_CompanyTopNavigation" model="@appUser" />
+
+                var company = _context.ClientCompany.FirstOrDefault(c => c.ClientCompanyId == companyUser.ClientCompanyId);
+                <partial name="AdminLTE/_CompanySidebar" model="@company" />
+            }
+            else if (vendorUser is not null)
+            {
+                <partial name="AdminLTE/_AgencyTopNavigation" model="@appUser" />
+
+                var vendor = _context.Vendor.FirstOrDefault(c => c.VendorId == vendorUser.VendorId);
+                <partial name="AdminLTE/_VendorSidebar" model="@vendor"/>
+            }
+            else
+            {
+                <partial name="AdminLTE/_TopNavigation" model="@appUser" />
+                <partial name="AdminLTE/_Sidebar" />
+            }
+        }
+        <div class="content-wrapper content-wrapper-main">
+@*            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-12">
+                           @Html.BuildBreadcrumbNavigation((List<BreadcrumbItem>)ViewBag.BreadcrumbExtras)
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+            
+            <breadcrumb></breadcrumb>
+            <div id="main-content" class="content">
+                <main>
+                    
+                @RenderBody()
+                </main>
+            </div>
+        </div>
+        <partial name="AdminLTE/_Footer" />
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fa fa-window-close"></i> Cancel</button>
+                        <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" style="padding:0;border:0">
+                            <div class="pull-right">
+                                <button type="submit" class="btn btn-default btn-flat btn-outline-danger"><i class="fa fa-sign-out"></i> Logout</button>
+                            </div>
+                        </form>
+                    </div>
+                </div> <!-- End of Content Wrapper -->
+            </div>
+        </div>
+    </div>
+    @RenderSection("Scripts", required: false)
+    @await Component.InvokeAsync("NToastNotify")
+</body>
+</html>

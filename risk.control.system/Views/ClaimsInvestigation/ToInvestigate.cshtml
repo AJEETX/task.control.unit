@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Claim: Active ";
+}
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fa fa-binoculars"></i>  Withdraw </h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="checkboxes" asp-action="Assign" method="post" enctype="multipart/form-data">
+                            <div class="col-md-12">
+
+                                <table id="customerTable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Policy #</th>
+                                            <th>Document</th>
+                                            <th>Customer</th>
+                                            <th>Customer Name</th>
+                                            <th>Beneficiary</th>
+                                            <th>Beneficiary Name</th>
+                                            <th>Claim Type</th>
+                                            <th>Status</th>
+                                            <th>Stage</th>
+                                            <th>Created On</th>
+                                            <th>
+                                                Day(s) <i class="fa fa-asterisk" style="color:red;font-size:12px" title="Days since Active"></i>
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                   
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts    {
+    <script>
+        $(document).ready(function () {
+            $("#customerTable").DataTable({
+                ajax: {
+                    url: '/api/ClaimsInvestigation/GetToInvestigate',
+                    dataSrc: ''
+                },
+                fixedHeader: true,
+                processing: true,
+                paging: true,
+                language: {
+                    loadingRecords: '&nbsp;',
+                    processing: '<i class="fas fa-sync fa-spin fa-4x fa-fw"></i><span class="sr-only">Loading...</span>'
+                },
+                columns: [
+                    /* Name of the keys from
+                    data file source */
+                    {
+                        "data": "id", "name": "Id", "bVisible": false
+                    },
+                    { "data": "policyNum" },
+                    {
+                        "sDefaultContent": "",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            var img = '<img src="' + row.document + '" src height="30" width="30" />';
+                            return img;
+                        }
+                    },
+                    {
+                        "sDefaultContent": "",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            var img = '<img src="' + row.customer + '" src height="30" width="30" />';
+                            return img;
+                        }
+                    },
+                    { "data": "name" },
+                    {
+                        "sDefaultContent": "",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            var img = '<img src="' + row.beneficiaryPhoto + '" src height="30" width="30" />';
+                            return img;
+                        }
+                    },
+                    { "data": "beneficiaryName" },
+                    { "data": "serviceType" },
+                    { "data": "status" },
+                    { "data": "location" },
+                    { "data": "created" },
+                    { "data": "timePending" },
+                    {
+                        "sDefaultContent": "",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            var buttons = "";
+                            buttons += '<a href="withdraw?Id=' + row.id + '" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i> X </a>&nbsp;'
+                            return buttons;
+                        }
+                    }
+                ],
+                error: function (xhr, status, error) { alert('err ' + error) }
+            });
+        });
+    </script>
+}

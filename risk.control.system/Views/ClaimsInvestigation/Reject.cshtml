@@ -1,0 +1,126 @@
+﻿@model IEnumerable<risk.control.system.Models.ClaimsInvestigation>
+
+@{
+    ViewData["Title"] = "Index";
+    var hasClientCompany = @ViewBag.HasClientCompany ? "none" : "";
+}
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="index">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-folder-open"></i> Rejected Claims</h3>
+                            </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <a class="btn btn-success" asp-controller="ClaimsInvestigation" asp-action="Create"><i class="fas fa-plus"></i> @Applicationsettings.CREATE</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">Active Claims List</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="checkboxes" asp-action="Assign" method="post" enctype="multipart/form-data">
+                            <div class="col-md-12">
+                                <table id="datatable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Claim Document
+                                            </th>
+                                            <th>
+                                                Customer Photo Document
+                                            </th>
+
+                                            <th style="display:@hasClientCompany">
+                                                @Html.DisplayNameFor(model => model.PolicyDetail.ClientCompany)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.PolicyDetail.LineOfBusiness)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.InvestigationCaseStatus)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.CustomerDetail.CustomerName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.PolicyDetail.ClaimType)
+                                            </th>
+                                            <th>
+                                                Location - SubStatus
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td style="display:@hasClientCompany">
+                                                    @Html.DisplayFor(modelItem => item.PolicyDetail.ClientCompany.Name)
+                                                </td>
+                                                <td>
+                                                    @if (item?.PolicyDetail.DocumentImage is not null)
+                                                    {
+                                                        <img id="documentImage" class="form-Image" src="data:image/*;base64,@(Convert.ToBase64String(item?.PolicyDetail.DocumentImage))">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img id="documentImage" class="form-Image" src="@Applicationsettings.NO_IMAGE">
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (item?.CustomerDetail.ProfilePicture is not null)
+                                                    {
+                                                        <img id="profileImage" class="form-Image" src="data:image/*;base64,@(Convert.ToBase64String(item?.CustomerDetail.ProfilePicture))">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img id="profileImage" class="form-Image" src="@Applicationsettings.NO_IMAGE">
+                                                    }
+                                                </td>
+
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.PolicyDetail.LineOfBusiness.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.InvestigationCaseStatus.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.CustomerDetail.CustomerName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.PolicyDetail.ClaimType)
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        foreach (var caseLocation in item.CaseLocations)
+                                                        {
+                                                            <span class="badge badge-light">@caseLocation.PinCode.Code - @caseLocation.InvestigationCaseSubStatus.Name</span>
+                                                        }
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

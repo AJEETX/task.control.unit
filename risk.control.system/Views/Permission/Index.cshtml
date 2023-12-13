@@ -1,0 +1,75 @@
+﻿@model PermissionsViewModel
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">Access:<i> <b> @Model.RoleName</b></i></h3>
+                    </div>
+                    <div class="card-body contained-width">
+                        <form asp-controller="permission" method="post" asp-action="Update" class="d-inline">
+                            <input asp-for="@Model.RoleId" type="hidden" />
+                            <input asp-for="@Model.RoleName" type="hidden" />
+                            <table class="table table-striped" id="permissionTable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Module name
+                                        </th>
+                                        <th>
+                                            VIEW
+                                        </th>
+                                        <th>
+                                            CREATE
+                                        </th>
+                                        <th>
+                                            EDIT
+                                        </th>
+                                        <th>
+                                            DELETE
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int j = 0; j < Model.PermissionViewModels.Count; j++)
+                                    {
+                                        var startIndex = Applicationsettings.PERMISSION.Length + 1;
+                                        var contentLength = Model.PermissionViewModels[j].RoleClaims[0].Value.IndexOf(".", startIndex) - startIndex;
+                                        var roleClaimValue = Model.PermissionViewModels[j].RoleClaims[0]?.Value;
+                                        var roleValue = roleClaimValue.Substring(startIndex, contentLength);
+                                        var actionType = roleClaimValue.Substring(startIndex + contentLength + 1);
+                                        <tr>
+                                            <td>
+                                                @roleValue
+                                            </td>
+                                            @for (var i = 0; i < Model.PermissionViewModels[j].RoleClaims.Count; i++)
+                                            {
+                                                <input asp-for="@Model.PermissionViewModels[j].RoleClaims[i].Type" type="hidden" />
+                                                <input asp-for="@Model.PermissionViewModels[j].RoleClaims[i].Value" type="hidden" />
+                                                <td>
+                                                    <div class="form-check m-1">
+                                                        <input asp-for="@Model.PermissionViewModels[j].RoleClaims[i].Selected" class="form-check-input" />
+                                                    </div>
+                                                </td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="card-footer text-right">
+                                <a asp-controller="roles" asp-action="Index" class="btn btn-secondary">
+                                    <i class="fa fa-window-close"></i>
+                                    Cancel
+                                </a>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-plus"></i> &nbsp;Edit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

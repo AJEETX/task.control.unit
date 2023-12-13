@@ -1,0 +1,282 @@
+﻿@model risk.control.system.Models.ClientCompany
+
+@{
+    ViewData["Title"] = @Applicationsettings.MANAGE_CLIENT_COMPANY;
+}
+<section class="content">
+    <input type="hidden" id="Latitude" asp-for="@Model.PinCode.Latitude" />
+    <input type="hidden" id="Longitude" asp-for="@Model.PinCode.Longitude" />
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-building"></i> Company Profile </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    <dt class="col-sm-5">
+                                        Company Domain
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        <a href="#"> @Html.DisplayFor(model => model.Email)</a>
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        Company Name
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Name)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        Code
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Code)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Description)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Description)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.PhoneNumber)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.PhoneNumber)
+                                    </dd>
+
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Branch)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Branch)
+                                    </dd>
+
+                                    <dt class="col-sm-5">
+                                        Document
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @if (Model?.DocumentUrl is not null)
+                                        {
+                                            <img id="ProfileImage" class="form-Image" style="width:auto;" src="@Model?.DocumentUrl">
+                                        }
+                                        else
+                                        {
+                                            <img id="ProfileImage" class="form-Image" src="@Applicationsettings.NO_IMAGE">
+                                        }
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Addressline)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Addressline)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.District)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.District.Name)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.State)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.State.Name)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.PinCode)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.PinCode.Code)
+                                    </dd>
+
+                                    <dt class="col-sm-5">
+                                        @Html.DisplayNameFor(model => model.Country)
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Country.Name)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        Send SMS
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.SendSMS)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        Auto-Allocation
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.Auto)
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        Verify Pan
+                                    </dt>
+                                    <dd class="col-sm-5">
+                                        @Html.DisplayFor(model => model.VerifyOcr)
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="col-md-6">
+                                Pan API
+                                <dl class="row">
+                                    <dt class=" col-sm-5">
+                                        API endpoint
+                                    </dt>
+                                    <dd class="col-sm-12">
+                                        <a href="#">  @Html.DisplayFor(model => model.PanIdfyUrl)</a>
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        Api Key
+                                    </dt>
+                                    <dd class="col-sm-12">
+                                        <a href="#">  @Html.DisplayFor(model => model.RapidAPIKey)</a>
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        Api TaskId
+                                    </dt>
+                                    <dd class="col-sm-12">
+                                        <a href="#">  @Html.DisplayFor(model => model.RapidAPITaskId)</a>
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        Api GroupId
+                                    </dt>
+                                    <dd class="col-sm-12">
+                                        <a href="#">  @Html.DisplayFor(model => model.RapidAPIGroupId)</a>
+                                    </dd>
+                                    <dt class="col-sm-5">
+                                        Remaining count
+                                    </dt>
+                                    <dd class="col-sm-12">
+                                        <a href="#">  @Html.DisplayFor(model => model.RapidAPIPanRemainCount)</a>
+                                    </dd>
+                                </dl>
+                                Backend Api
+                                <dl class="row">
+                                    <dt class=" col-sm-5">
+                                        API endpoint
+                                    </dt>
+                                    <dd class="col-sm-12">
+                                        <a href="#">@Html.DisplayFor(model => model.ApiBaseUrl)</a>
+                                    </dd>
+
+                                </dl>
+                            </div>
+                            <div class="col-md-6">
+                                Map View
+                                <div id="maps">
+                                </div>
+                                <div id="pop-face-map"></div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <a asp-controller="ClientCompany" asp-action="Index" class="btn btn-default">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Back
+                                </a>
+                                <a asp-controller="ClientCompany" asp-action="Edit" asp-route-id="@Model.ClientCompanyId" class="btn btn-warning"><i class='fas fa-pen'></i> @Applicationsettings.PROFILE</a>
+                                <a asp-controller="CompanyUser" asp-action="Index" asp-route-id="@Model.ClientCompanyId" class="btn btn-success"><i class="fas fa-user-plus"></i>  @Applicationsettings.USER</a>
+                                @*<a asp-controller="ClientCompany" asp-action="EmpanelledVendors" asp-route-id="@Model.ClientCompanyId" class="btn btn-success"><i class="fas fa-user-secret"></i>  @Applicationsettings.VENDOR</a>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        var apiKey = 'AIzaSyDH8T9FvJ8n2LNwxkppRAeOq3Mx7I3qi1E';
+
+        function GetLoc() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success);
+            } else {
+                alert("There is Some Problem on your current browser to get Geo Location!");
+            }
+        }
+
+        async function success(position) {
+            const image =
+                "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+            const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+            // The location of Uluru
+            var element = document.getElementById("pop-face-map");
+            var bounds = new google.maps.LatLngBounds();
+
+            // The map, centered at branch
+            var map = new Map(element, {
+                scaleControl: true,
+                zoom: 14,
+                center: position,
+                mapId: "4504f8b37365c3d0",
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+            });
+            var b_lat = parseFloat($('#Latitude').val());
+            var b_lng = parseFloat($('#Longitude').val());
+            var b_response = $.ajax({
+                type: "GET",
+                url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${b_lat},${b_lng}&sensor=false&key=${apiKey}`,
+                async: false
+            }).responseText;
+
+            var b_current_data = JSON.parse(b_response);
+
+            var b_LatLng = new google.maps.LatLng(b_lat, b_lng);
+            var b_marker = new google.maps.Marker({
+                position: b_LatLng,
+                title: "Branch Location: " + b_current_data.results[0].formatted_address
+            });
+            b_marker.setMap(map);
+            var b_getInfoWindow = new google.maps.InfoWindow({
+                content: "<b>Branch Location</b><br/> " +
+                    b_current_data.results[0].formatted_address + ""
+            });
+            b_getInfoWindow.open(map, b_marker);
+
+            var lat = position.coords.latitude;
+            var long = position.coords.longitude;
+            var locresponse = $.ajax({
+                type: "GET",
+                url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&sensor=false&key=${apiKey}`,
+                async: false
+            }).responseText;
+            var current_data = JSON.parse(locresponse);
+
+            var LatLng = new google.maps.LatLng(lat, long);
+            var marker = new google.maps.Marker({
+                position: LatLng,
+                icon: image,
+                title: "You are here: " + current_data.results[0].formatted_address
+            });
+
+            marker.setMap(map);
+            var getInfoWindow = new google.maps.InfoWindow({
+                content: "<b>Your Current Location</b><br/> " +
+                    current_data.results[0].formatted_address + ""
+            });
+            getInfoWindow.open(map, marker);
+
+            bounds.extend(LatLng);
+            bounds.extend(b_LatLng);
+
+            map.fitBounds(bounds);
+            map.setCenter(bounds.getCenter());
+        }
+
+        GetLoc();
+    </script>
+}

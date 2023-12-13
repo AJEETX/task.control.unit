@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "{company.name} contact",
+    "Value": "+1 124 5677 8765"
+  },
+  {
+    "Name": "{company.name} helpline",
+    "Value": "+1 124 5677 8766"
+  },
+  {
+    "Name": "Declaration",
+    "Value": "Approved !!!"
+  }
+]

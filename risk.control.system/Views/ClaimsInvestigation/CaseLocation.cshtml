@@ -1,0 +1,113 @@
+﻿@model ClaimsInvestigation
+
+@{
+    ViewData["Title"] = @Applicationsettings.DETAILS;
+}
+
+<h3>CASE VERIFICATION LOCATIONS</h3>
+
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <form asp-action="index">
+                        <div class="card-header">
+                            <h3 class="card-title">@Applicationsettings.VERIFY_LOCATIONS</h3>
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm">
+                                    <input autocomplete="off" name="SearchString" type="text" class="form-control" placeholder="search">
+                                    <div class="input-group-append">
+                                        <div onclick="this.parentNode.submit()" class="btn btn-success">
+                                            <i class="fas fa-search"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <a asp-controller="ClaimsInvestigation" asp-action="Details" asp-route-id="@Model.ClaimsInvestigationId" class="btn btn-secondary"><i class='fas fa-undo'></i> @Applicationsettings.BACK</a>
+                                    <a class="btn btn-success" asp-controller="CaseLocations" asp-action="Create" asp-route-id="@Model.ClaimsInvestigationId"><i class="fas fa-plus"></i> @Applicationsettings.CREATE</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-body">
+                            <table id="datatable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Benficiary Name
+                                        </th>
+                                        <th>
+                                            Benficiary Relation
+                                        </th>
+                                        <th>
+                                            Country
+                                        </th>
+                                        <th>
+                                            District
+                                        </th>
+                                        <th>
+                                            State
+                                        </th>
+                                        
+                                        <th>
+                                            Verification Pincodes
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.UpdatedBy)
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.CaseLocations)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.BeneficiaryName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.BeneficiaryRelation.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Country.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.District.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.State.Name)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.PinCode.Code)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.UpdatedBy)
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-xs btn-info" asp-controller="CaseLocations" asp-action="Details" asp-route-id="@item.CaseLocationId"> <i class="fa fa-search"></i>   @Applicationsettings.DETAILS</a>&nbsp;
+                                                <a class="btn btn-xs btn-warning" asp-controller="CaseLocations" asp-action="Edit" asp-route-id="@item.CaseLocationId"><i class="fas fa-pen"></i>   @Applicationsettings.EDIT</a> &nbsp;
+                                                <a class="btn btn-xs btn-danger" asp-controller="CaseLocations" asp-action="Delete" asp-route-id="@item.CaseLocationId"> <i class="fas fa-trash"></i>   @Applicationsettings.DELETE</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

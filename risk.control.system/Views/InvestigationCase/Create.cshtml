@@ -1,0 +1,153 @@
+﻿@model risk.control.system.Models.InvestigationCase
+
+@{
+    ViewData["Title"] = "Create";
+}
+<section class="content pt-2">
+    <div class="container-fluid ">
+        <form id="create-form" asp-action="Create" asp-antiforgery="true">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title">Create Case</h3>
+                        </div>
+                        <div class="card-body">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <input asp-for="Description" class="form-control" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="LineOfBusinessId" class="control-label"></label>
+                                <select asp-for="LineOfBusinessId" class="form-control"
+                                        asp-items="ViewBag.LineOfBusinessId">
+                                    <option>--- SELECT LINE OF BUSINESS ---</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="InvestigationCaseStatusId" class="control-label"></label>
+                                <select asp-for="InvestigationCaseStatusId" class="form-control"
+                                        asp-items="ViewBag.InvestigationCaseStatusId">
+                                    <option>--- SELECT CASE STATUS ---</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Created" class="control-label"></label>
+                                <input asp-for="Created" class="form-control" />
+                                <span asp-validation-for="Created" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputFile">File input</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="exampleInputFile">
+                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Upload</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">...</h3>
+                        </div>
+                        <div class="card-body">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <button disabled=true type="button" class="btn btn-secondary">___User name</button>
+                                </div>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <input asp-for="Description" class="form-control" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="LineOfBusinessId" class="control-label"></label>
+                                <select asp-for="LineOfBusinessId" class="form-control" asp-items="ViewBag.LineOfBusinessId"></select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="InvestigationCaseStatusId" class="control-label"></label>
+                                <select asp-for="InvestigationCaseStatusId" class="form-control"
+                                        asp-items="ViewBag.RiskCaseStatusId"></select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Created" class="control-label"></label>
+                                <input asp-for="Created" class="form-control" />
+                                <span asp-validation-for="Created" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                        <div class="card-footer text-right">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fa fa-window-close"></i>
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-plus"></i> Create
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+
+            var askConfirmation = true;
+            $('#create-form').submit(function (e) {
+                if (askConfirmation) {
+                    e.preventDefault();
+                    $.confirm({
+                        title: "Confirm Create",
+                        content: "Are you sure to create?",
+                        columnClass: 'medium',
+                        icon: 'fas fa-money-check-alt',
+                        type: 'green',
+                        closeIcon: true,
+                        buttons: {
+                            confirm: {
+                                text: "Create item",
+                                btnClass: 'btn-success',
+                                action: function () {
+                                    askConfirmation = false;
+                                    $('#create-form').submit();
+                                }
+                            },
+                            cancel: {
+                                text: "Cancel",
+                                btnClass: 'btn-default'
+                            }
+                        }
+                    });
+                }
+            })
+        });
+    </script>
+}

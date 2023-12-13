@@ -1,0 +1,61 @@
+﻿@model List<Country>
+
+<section class="content pt-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-map-marked-alt"></i> @Applicationsettings.COUNTRY</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <a class="btn btn-success" asp-controller="Country" asp-action="Create"><i class="fas fa-map-marked-alt"></i> @Applicationsettings.CREATE</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-list"></i> Countries List</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="datatable" class="table table-bordered table-hover dt-responsive nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Code
+
+                                    </th>
+                                    <th>
+                                        Country
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var country in Model)
+                                {
+                                    <tr>
+                                        <td>@country.Code</td>
+                                        <td>@country.Name</td>
+                                        <td>
+                                            <a class="btn btn-xs btn-warning" asp-action="Edit" asp-route-id="@country.CountryId"><i class="fas fa-map-marked-alt"></i> @Applicationsettings.EDIT</a> &nbsp;
+                                            <a class="btn btn-xs btn-danger" asp-action="Delete" asp-route-id="@country.CountryId"><i class="fas fa-trash"></i> @Applicationsettings.DELETE</a>
+                                            <input type="hidden" value="@country.CountryId" />
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
