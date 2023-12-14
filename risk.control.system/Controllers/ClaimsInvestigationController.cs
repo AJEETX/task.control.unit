@@ -183,7 +183,7 @@ namespace risk.control.system.Controllers
         // GET: ClaimsInvestigation
 
         [Breadcrumb(" Assign", FromAction = "Index")]
-        public IActionResult Draft()
+        public async Task<IActionResult> Draft()
         {
             return View();
         }

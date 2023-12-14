@@ -102,7 +102,7 @@
                             <div class="col-md-12">
                                 <div class="card card-light">
                                     <div class="card-header">
-                                        <h3 class="card-title"><i class="fas fa-tachometer-alt"></i> Agency Current Case Count: Pie Chart</h3>
+                                        <h3 class="card-title"><i class="fas fa-tachometer-alt"></i> Agency Current Task Count: Pie Chart</h3>
                                     </div>
                                     <div class="card-body">
                                         <div id="container-agency-pie" class="container-agency">
@@ -122,28 +122,28 @@
 
 <script>
     $(document).ready(function () {
-        GetWeekly('Claim', 'GetWeeklyClaim', 'container-claim');
-        GetWeeklyTat('Claim', 'GetClaimWeeklyTat', 'container-claim-tat');
-        GetWeeklyPie('Claim', 'GetWeeklyClaim', 'container-claim-pie');
+        GetWeekly('Task', 'GetWeeklyClaim', 'container-claim');
+        GetWeeklyTat('Task', 'GetClaimWeeklyTat', 'container-claim-tat');
+        GetWeeklyPie('Task', 'GetWeeklyClaim', 'container-claim-pie');
         GetWeeklyPie('Agency ', 'GetAgentClaim', 'container-agency-pie');
 
-        GetChart('Claim', 'GetClaimChart', 'container-monthly-claim')
+        GetChart('Task', 'GetClaimChart', 'container-monthly-claim')
 
         $("#btnWeeklyReport").click(function () {
-            GetWeekly('Claim', 'GetWeeklyClaim', 'container-claim');
+            GetWeekly('Task', 'GetWeeklyClaim', 'container-claim');
         })
 
         $("#btnMonthlyReport").click(function () {
-            GetMonthly('Claim', 'GetMonthlyClaim', 'container-claim');
+            GetMonthly('Task', 'GetMonthlyClaim', 'container-claim');
         })
         $("#btnWeeklyPie").click(function () {
-            GetWeeklyPie('Claim', 'GetWeeklyClaim', 'container-claim-pie');
+            GetWeeklyPie('Task', 'GetWeeklyClaim', 'container-claim-pie');
         })
         $("#btnMonthlyPie").click(function () {
-            GetMonthlyPie('Claim', 'GetMonthlyClaim', 'container-claim-pie');
+            GetMonthlyPie('Task', 'GetMonthlyClaim', 'container-claim-pie');
         })
         $("#btnWeeklyTat").click(function () {
-            GetWeeklyTat('Claim', 'GetClaimWeeklyTat', 'container-claim-tat');
+            GetWeeklyTat('Task', 'GetClaimWeeklyTat', 'container-claim-tat');
         })
         $("#btnMonthlyTat").click(function () {
             //GetMonthly('Claim', 'GetClaimWeeklyTat', 'container-claim-tat');
