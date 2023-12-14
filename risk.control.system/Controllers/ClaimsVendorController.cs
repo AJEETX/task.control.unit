@@ -61,7 +61,7 @@ namespace risk.control.system.Controllers
         {
             if (string.IsNullOrWhiteSpace(selectedcase))
             {
-                toastNotification.AddAlertToastMessage("No case selected!!!. Please select case to be allocate.");
+                toastNotification.AddAlertToastMessage("No task selected!!!. Please select task to be allocate.");
                 return RedirectToAction(nameof(Index));
             }
 
@@ -116,7 +116,7 @@ namespace risk.control.system.Controllers
         {
             if (string.IsNullOrWhiteSpace(selectedcase))
             {
-                toastNotification.AddAlertToastMessage("No case selected!!!. Please select case to be allocate.");
+                toastNotification.AddAlertToastMessage("No task selected!!!. Please select task to be allocate.");
                 return RedirectToAction(nameof(Index));
             }
 
@@ -401,7 +401,7 @@ namespace risk.control.system.Controllers
 
             await mailboxService.NotifyClaimAssignmentToVendorAgent(userEmail, claimId, vendorAgent.Email, vendorAgent.VendorId, caseLocationId);
 
-            toastNotification.AddSuccessToastMessage(string.Format("<i class='far fa-file-powerpoint'></i> Claim [Policy # {0}] tasked to {1} successfully!", claim.PolicyDetail.ContractNumber, vendorAgent.Email));
+            toastNotification.AddSuccessToastMessage(string.Format("<i class='far fa-file-powerpoint'></i> Task [Task # {0}] tasked to {1} successfully!", claim.PolicyDetail.ContractNumber, vendorAgent.Email));
 
             return RedirectToAction(nameof(ClaimsVendorController.Index), "ClaimsVendor");
         }
@@ -435,7 +435,7 @@ namespace risk.control.system.Controllers
         {
             if (string.IsNullOrWhiteSpace(selectedcase))
             {
-                toastNotification.AddAlertToastMessage("No case selected!!!. Please select case to be investigate.");
+                toastNotification.AddAlertToastMessage("No task selected!!!. Please select task to be investigate.");
                 return RedirectToAction(nameof(Index));
             }
 
@@ -590,7 +590,7 @@ namespace risk.control.system.Controllers
         {
             if (string.IsNullOrWhiteSpace(selectedcase))
             {
-                toastNotification.AddAlertToastMessage("No case selected!!!. Please select case to be review.");
+                toastNotification.AddAlertToastMessage("No task selected!!!. Please select task to be review.");
                 return RedirectToAction(nameof(Index));
             }
 
@@ -682,7 +682,7 @@ namespace risk.control.system.Controllers
         {
             if (string.IsNullOrWhiteSpace(selectedcase))
             {
-                toastNotification.AddAlertToastMessage("No case selected!!!. Please select case to be investigate.");
+                toastNotification.AddAlertToastMessage("No task selected!!!. Please select task to be investigate.");
                 return RedirectToAction(nameof(Index));
             }
 
@@ -822,7 +822,7 @@ namespace risk.control.system.Controllers
 
             await mailboxService.NotifyClaimReportSubmitToVendorSupervisor(userEmail, claimId, caseLocationId);
 
-            toastNotification.AddSuccessToastMessage(string.Format("<i class='far fa-file-powerpoint'></i> Claim [Policy # {0}] investigation submitted to supervisor successfully !", claim.PolicyDetail.ContractNumber));
+            toastNotification.AddSuccessToastMessage(string.Format("<i class='far fa-file-powerpoint'></i> Task [Task # {0}] report submitted to supervisor successfully !", claim.PolicyDetail.ContractNumber));
 
             return RedirectToAction(nameof(ClaimsVendorController.Agent), "ClaimsVendor");
         }
@@ -845,7 +845,7 @@ namespace risk.control.system.Controllers
                 if (success != null)
                 {
                     await mailboxService.NotifyClaimReportSubmitToCompany(userEmail, claimId, caseLocationId);
-                    toastNotification.AddSuccessToastMessage(string.Format("<i class='far fa-file-powerpoint'></i> Claim [Policy # {0}] report submitted to Company successfully !", success.PolicyDetail.ContractNumber));
+                    toastNotification.AddSuccessToastMessage(string.Format("<i class='far fa-file-powerpoint'></i> Task [Task # {0}] report submitted to Company successfully !", success.PolicyDetail.ContractNumber));
                 }
                 else
                 {

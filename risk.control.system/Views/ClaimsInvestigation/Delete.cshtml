@@ -59,13 +59,13 @@
                             <article>
                                 <div class="bb-blog-inner">
                                     <header class="bb-blog-header">
-                                        <h5 class="bb-blog-title" itemprop="name">Policy # : @Model.Claim?.PolicyDetail?.ContractNumber</h5>
+                                        <h5 class="bb-blog-title" itemprop="name">Task # : @Model.Claim?.PolicyDetail?.ContractNumber</h5>
                                     </header>
                                     <div class="card card-solid">
                                         <div class="progress">
                                             <i class="far fa-bookmark" style="font-size:1.1rem;"></i>
                                             <div class="progress-bar" role="progressbar" style="width:32.5%;background-color:green;">
-                                                policy
+                                                task
                                             </div>
                                             <i class="far fa-caret-square-right" style="font-size:1.1rem;"></i>
                                             <div class="progress-bar" role="progressbar" style="width:32.33%;background-color:@customerProgressColor">
@@ -82,14 +82,14 @@
                                                 <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
                                                     <div class="card bg-light d-flex flex-fill">
                                                         <div class="card-header text-muted border-bottom-0">
-                                                            <i class="far fa-file-powerpoint"></i> Policy Details
+                                                            <i class="far fa-file-powerpoint"></i> Task Details
                                                         </div>
                                                         <div class="card-body pt-0">
                                                             <div class="row">
                                                                 <div class="col-7">
                                                                     <h2 class="lead"><b>@Model.Claim?.PolicyDetail.LineOfBusiness.Name</b></h2>
                                                                     <p class="text-muted text-sm">
-                                                                        <b>Claim Type: </b>@Model.Claim?.PolicyDetail.ClaimType
+                                                                        <b>Task Type: </b>@Model.Claim?.PolicyDetail.ClaimType
                                                                     </p>
                                                                     <ul class="ml-4 mb-0 fa-ul text-muted">
                                                                         <li class="small">
@@ -108,7 +108,7 @@
                                                                             <span class="fa-li">
                                                                                 <i class="fas fa-money-check-alt"></i>
                                                                             </span>
-                                                                            Budget center: @Model.Claim?.PolicyDetail.CostCentre.Name
+                                                                            Department: @Model.Claim?.PolicyDetail.CostCentre.Name
                                                                         </li>
                                                                         <li class="small">
                                                                             <span class="fa-li">
