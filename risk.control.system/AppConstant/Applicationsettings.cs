@@ -16,9 +16,10 @@
         //WEBSITE SETTINGS
 
         public const string WEBSITE_SITE_MENU_BRAND = "aby";
-        public const string WEBSITE_COMPANY_MENU_BRAND = "iCheckify";
-        public const string WEBSITE_TITLE = "iCheckify";
+        public const string WEBSITE_COMPANY_MENU_BRAND = "i-Taskify";
+        public const string WEBSITE_TITLE = "i-Taskify";
         public const string WEBSITE_SITE_MENU_LOGO = "/img/logo.png";
+        public const string WEBSITE_TOP_LOGO = "/images/i-taskify.png";
         public const string WEBSITE_SITE_DESIGNER = "its aby";
         public const string WEBSITE_SITE_DESIGNER_URL = "http://itsaby.com.au";
         public static readonly string FTP_SITE = "ftp://files.000webhost.com/public_html/";
@@ -26,7 +27,7 @@
         public static readonly string FTP_SITE_DATA = "C0##ect10n";
 
         //LOGIN
-        public const string WEBSITE_LOGIN = "Log in: iCheckify";
+        public const string WEBSITE_LOGIN = "Log in: i-taskify";
 
         public const string WEBSITE_SIGNIN = "Sign in";
 
@@ -162,10 +163,10 @@
         //public const string CURRENT_DISTRICT = "Forest Hill";
         //public const string CURRENT_STATE = "VIC";
 
-        public const string CANARA = "canara hsbc life";
-        public const string CANARACODE = "chl";
-        public const string CANARADOMAIN = "canarahsbclife.com";
-        public const string CANARALOGO = "/img/chl.png";
+        public const string BSNL = "bsnl mobile";
+        public const string BSNL_CODE = "bsnl";
+        public const string BSNL_DOMAIN = "bsnl.com";
+        public const string BSNL_LOGO = "/images/bsnl.png";
 
         public const string HDFC = "hdfc life";
         public const string HDFCCODE = "hdl";
@@ -190,7 +191,7 @@
         {
             public const string DISPLAY_NAME = "ADMIN";
             public const string CODE = "admin";
-            public const string USERNAME = "admin@icheckify.co.in";
+            public const string USERNAME = "admin@i-taskify.co.in";
             public const string EMAIL = USERNAME;
             public const string FIRST_NAME = "Ajeet";
             public const string LAST_NAME = "Kumar";
@@ -210,7 +211,7 @@
         {
             public const string DISPLAY_NAME = "CREATOR";
             public const string CODE = "creator";
-            public const string USERNAME = "creator@" + CANARADOMAIN;
+            public const string USERNAME = "creator@" + BSNL_DOMAIN;
             public const string EMAIL = USERNAME;
             public const string FIRST_NAME = "Rashmi";
             public const string LAST_NAME = "Kumar";
@@ -221,7 +222,7 @@
         {
             public const string DISPLAY_NAME = "ASSIGNER";
             public const string CODE = "assigner";
-            public const string USERNAME = "assigner@" + CANARADOMAIN;
+            public const string USERNAME = "assigner@" + BSNL_DOMAIN;
             public const string EMAIL = USERNAME;
             public const string FIRST_NAME = CODE;
             public const string LAST_NAME = "Kumar";
@@ -232,7 +233,7 @@
         {
             public const string DISPLAY_NAME = "ASSESSOR";
             public const string CODE = "assessor";
-            public const string USERNAME = "assessor@" + CANARADOMAIN;
+            public const string USERNAME = "assessor@" + BSNL_DOMAIN;
             public const string EMAIL = USERNAME;
             public const string FIRST_NAME = CODE;
             public const string LAST_NAME = "Kumar";

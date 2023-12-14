@@ -318,6 +318,9 @@ namespace risk.control.system.Services
                         claimsInvestigation.UpdatedBy = userEmail;
                         claimsInvestigation.CurrentUserEmail = userEmail;
                         claimsInvestigation.CurrentClaimOwner = currentUser.Email;
+                        claimsInvestigation.InvestigationCaseStatusId = _context.InvestigationCaseStatus.FirstOrDefault(i => i.Name.ToUpper() == CONSTANTS.CASE_STATUS.INITIATED).InvestigationCaseStatusId;
+                        claimsInvestigation.InvestigationCaseSubStatusId = _context.InvestigationCaseSubStatus.FirstOrDefault(i => i.Name.ToUpper() == CONSTANTS.CASE_STATUS.CASE_SUBSTATUS.CREATED_BY_CREATOR).InvestigationCaseSubStatusId;
+
                         var aaddedClaimId = _context.ClaimsInvestigation.Add(claimsInvestigation);
                         addedClaimId = aaddedClaimId.Entity.ClaimsInvestigationId;
                         if (existingPolicy == null)

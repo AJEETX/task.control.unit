@@ -19,12 +19,12 @@
                                 <div class="col-md-12">
                                     <span class="download-file badge badge-light">
                                         <a href="~/document/single.zip">
-                                            <i class="nav-icon fa fa-download"></i> sample file (1 claim)
+                                            <i class="nav-icon fa fa-download"></i> sample file (1 task)
                                         </a>
                                     </span>
                                     <span class="download-file badge badge-light">
                                         <a href="~/document/multi-pincode.zip">
-                                            <i class="nav-icon fa fa-download"></i> sample file (6 claims)
+                                            <i class="nav-icon fa fa-download"></i> sample file (6 tasks)
                                         </a>
                                     </span>
                                 </div>
@@ -37,7 +37,7 @@
                                         <div class="input-group mb-3">
                                             <img class="form-Image" id="profileImage" src="/img/upload.png">
                                             <input accept=".zip" type="file" class="form-control" name="postedFile" id="postedFile" />
-                                            <button id="UploadFileButton" disabled type="submit" class="btn btn-info" asp-controller="Uploads" asp-action="UploadClaims"><i class="nav-icon fa fa-upload"></i> Upload File</button>
+                                            <button id="UploadFileButton" disabled type="submit" class="btn btn-info" asp-controller="Uploads" asp-action="UploadClaims"><i class="nav-icon fa fa-upload"></i> Upload</button>
                                         </div>
                                     </div>
                                 </div>
@@ -48,8 +48,8 @@
                                         <div class="input-group mb-3">
                                             <img class="form-Image" id="ftpImage" src="/img/upload.png">
                                             <input accept=".zip" type="file" class="form-control" name="postedFtp" id="postedFtp" />
-                                            <button id="UploadFtpButton" disabled type="submit" class="btn btn-info" asp-controller="Uploads" asp-action="FtpUpload"><i class="nav-icon fa fa-upload"></i> Upload FTP</button>&nbsp;
-                                            <button id="DownloadFtpButton" type="submit" class="btn btn-info" asp-controller="Uploads" asp-action="FtpDownload"><i class="nav-icon fa fa-download"></i> Download FTP</button>
+                                            <button id="UploadFtpButton" disabled type="submit" class="btn btn-info" asp-controller="Uploads" asp-action="FtpUpload"><i class="nav-icon fa fa-upload"></i> Upload</button>&nbsp;
+                                            <button id="DownloadFtpButton" type="submit" class="btn btn-info" asp-controller="Uploads" asp-action="FtpDownload"><i class="nav-icon fa fa-download"></i> Download</button>
                                         </div>
                                     </div>
                                 </div>
@@ -64,13 +64,13 @@
                                             <tr>
                                                 <th><input type="checkbox" name="select_all" id="checkall" value="0" /></th>
                                                 <th>Id</th>
-                                                <th>Policy #</th>
+                                                <th>Task #</th>
                                                 <th>Document</th>
                                                 <th>Customer</th>
                                                 <th>Customer Name</th>
                                                 <th>Beneficiary</th>
                                                 <th>Beneficiary Name</th>
-                                                <th>Claim Type</th>
+                                                <th>Task Type</th>
                                                 <th>Pincode</th>
                                                 <th>Stage</th>
                                                 <th>Created On</th>

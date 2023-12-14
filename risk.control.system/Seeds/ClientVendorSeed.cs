@@ -112,10 +112,10 @@ namespace risk.control.system.Seeds
             var canara = new ClientCompany
             {
                 ClientCompanyId = Guid.NewGuid().ToString(),
-                Name = Applicationsettings.CANARA,
+                Name = Applicationsettings.BSNL,
                 Addressline = "34 Lasiandra Avenue ",
                 Branch = "FOREST HILL CHASE",
-                Code = Applicationsettings.CANARACODE,
+                Code = Applicationsettings.BSNL_CODE,
                 ActivatedDate = DateTime.Now,
                 AgreementDate = DateTime.Now,
                 BankName = "NAB",
@@ -126,8 +126,8 @@ namespace risk.control.system.Seeds
                 StateId = companyStateId,
                 PinCodeId = companyPinCode.PinCodeId,
                 Description = "CORPORATE OFFICE ",
-                Email = Applicationsettings.CANARADOMAIN,
-                DocumentUrl = Applicationsettings.CANARALOGO,
+                Email = Applicationsettings.BSNL_DOMAIN,
+                DocumentUrl = Applicationsettings.BSNL_LOGO,
                 PhoneNumber = "9988004739",
                 EmpanelledVendors = new List<Vendor> { checker, verify, investigate }
             };

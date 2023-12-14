@@ -12,7 +12,7 @@ namespace risk.control.system.Services
 
         public static async Task Send()
         {
-            var messages = new SMSBody { messages = new List<Message> { new Message { channel = "sms", originator = "icheckify", recipients = new List<string> { "+61432854196" }, content = "greet from icheckify", data_coding = "text" } } };
+            var messages = new SMSBody { messages = new List<Message> { new Message { channel = "sms", originator = "i-taskify", recipients = new List<string> { "+61432854196" }, content = "greet from icheckify", data_coding = "text" } } };
 
             var content = JsonConvert.SerializeObject(messages, Formatting.Indented);
             var request = new HttpRequestMessage

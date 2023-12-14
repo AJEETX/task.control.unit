@@ -1,7 +1,7 @@
 ﻿@model LoginViewModel
 
 @{
-    ViewData["Title"] = "login: icheckify";
+    ViewData["Title"] = "login: i-taskify";
 
     Layout = null;
 }
@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>icheckify: login</title>
+    <title>i-taskify: login</title>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="~/css/login.css">
@@ -77,7 +77,7 @@
 
             <div class="form-content">
                 <div class="login-form">
-                    <img src="/img/iCheckifyLogo.png" height="40px" />
+                    <img src="@Applicationsettings.WEBSITE_TOP_LOGO" height="40px" />
                     <div id="watermark">
                        - DEMO -
                     </div>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 <div class="signup-form">
-                    <img src="/img/iCheckifyLogo.png" height="40px" />
+                    <img src="@Applicationsettings.WEBSITE_TOP_LOGO" height="40px" />
 
                     <div class="title">Forgot Password</div>
                     <form style="padding-top:3rem;" action="Forgot" method="post">
